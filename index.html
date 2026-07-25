@@ -41,43 +41,88 @@
 
         body.intro-active { overflow: hidden; height: 100vh; }
 
-        /* ========== 인트로 ========== */
+        /* ========== 인트로 : 터미널 부팅 → 바탕화면 → 폴더 → 권한확인 ========== */
         .intro-overlay {
-            position: fixed; inset: 0; z-index: 5000; background: #050505; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; overflow: hidden; transition: opacity 0.7s ease;
+            position: fixed; inset: 0; z-index: 5000; background: #000; overflow: hidden;
+            transition: opacity 0.7s ease; cursor: none;
         }
         .intro-overlay.closing { opacity: 0; pointer-events: none; }
         .intro-noise {
-            position: absolute; inset: 0; opacity: 0.035; pointer-events: none;
+            position: absolute; inset: 0; opacity: 0.05; pointer-events: none; z-index: 30;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
-        .intro-shelf { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 56px; height: 220px; position: relative; z-index: 1; }
-        .intro-book { position: relative; width: 34px; border-radius: 3px 3px 0 0; border: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(40px) rotate(0deg); animation: bookIn 0.6s ease forwards; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        @keyframes bookIn { to { opacity: 1; transform: translateY(0) rotate(var(--r, 0deg)); } }
-        .intro-book.b1 { height: 170px; --r: -4deg; background: linear-gradient(180deg,#1a2c3d,#0e161d); animation-delay: 0.05s; }
-        .intro-book.b2 { height: 190px; --r: 2deg; background: linear-gradient(180deg,#2c2410,#16110a); animation-delay: 0.15s; }
-        .intro-book.b3 { height: 160px; --r: -2deg; background: linear-gradient(180deg,#132a17,#0a150c); animation-delay: 0.25s; }
-        .intro-book.b4 { height: 210px; width: 40px; animation-delay: 0.35s; }
-        .intro-book.b5 { height: 175px; --r: 3deg; background: linear-gradient(180deg,#241a2c,#120d16); animation-delay: 0.45s; }
-        .intro-book.b6 { height: 150px; --r: -3deg; background: linear-gradient(180deg,#2a1414,#150a0a); animation-delay: 0.55s; }
-        .intro-book.active {
-            background: linear-gradient(180deg, #3a0f0f, #1a0505); border-color: rgba(255,92,92,0.55);
-            box-shadow: 0 0 30px rgba(255,32,32,0.35), 0 14px 24px rgba(0,0,0,0.6);
-            transform: translateY(-18px) scale(1.08); animation-delay: 0.35s;
+
+        /* 부팅 터미널 */
+        .boot-screen { position: absolute; inset: 0; background: #000; padding: 60px; display: flex; align-items: flex-start; z-index: 2; }
+        .boot-screen.hidden { display: none; }
+        .boot-terminal { width: 100%; max-width: 640px; font-family: 'JetBrains Mono', monospace; }
+        .boot-line { min-height: 26px; font-size: 0.92rem; letter-spacing: 0.5px; color: #cfcfcf; margin-bottom: 10px; white-space: pre; }
+        .boot-line.boot-success { color: var(--label-red); }
+
+        /* 바탕화면 / 폴더 화면 공통 */
+        .desktop-screen { position: absolute; inset: 0; z-index: 1; overflow: hidden; opacity: 0; transition: opacity 0.35s ease; }
+        .desktop-screen.hidden { display: none; }
+        .desktop-screen.visible { opacity: 1; }
+        .desktop-wallpaper {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 40%, #141414 0%, #060606 75%);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        .intro-book-label { writing-mode: vertical-rl; text-orientation: upright; color: var(--label-red); font-size: 0.68rem; letter-spacing: 3px; position: absolute; top: 14px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; }
-        .intro-text-wrap { text-align: center; padding: 0 20px; opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; position: relative; z-index: 1; max-width: 480px; }
-        .intro-text-wrap.show { opacity: 1; transform: translateY(0); }
-        .intro-typewriter { font-size: 1.05rem; color: #e8e8e8; line-height: 1.9; min-height: 3.6em; margin-bottom: 26px; font-weight: 300; letter-spacing: 0.3px; }
-        .intro-cursor { display: inline-block; color: var(--label-red); animation: blinkCursor 0.9s steps(1) infinite; }
-        @keyframes blinkCursor { 50% { opacity: 0; } }
-        .intro-btn {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 2px; color: #fff; background: rgba(139,0,0,0.15);
-            border: 1px solid var(--label-red); padding: 12px 30px; border-radius: 3px; cursor: pointer; opacity: 0; transform: translateY(8px);
-            transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s, box-shadow 0.2s;
+        .wallpaper-mark { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13vw; letter-spacing: 6px; color: rgba(255,255,255,0.035); user-select: none; }
+        .desktop-crt {
+            position: absolute; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: soft-light;
+            background: repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 2px, transparent 2px, transparent 4px);
         }
-        .intro-btn.show { opacity: 1; transform: translateY(0); }
-        .intro-btn:hover { background: rgba(255,32,32,0.25); box-shadow: 0 0 24px rgba(255,32,32,0.35); }
+        .desktop-vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle, transparent 55%, rgba(0,0,0,0.5) 100%); }
+        .desktop-taskbar {
+            position: absolute; left: 0; right: 0; bottom: 0; height: 34px; z-index: 4;
+            background: rgba(10,10,10,0.85); border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 1px; color: var(--text-secondary);
+        }
+        .desktop-taskbar .dot-live { color: var(--label-red); }
+        .folder-titlebar {
+            position: absolute; top: 0; left: 0; right: 0; height: 42px; z-index: 4;
+            background: rgba(10,10,10,0.8); border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; gap: 10px; padding: 0 22px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 1px; color: #ddd;
+        }
+
+        .desktop-icons { position: absolute; top: 60px; left: 40px; right: 40px; bottom: 50px; z-index: 3; display: grid; grid-template-columns: repeat(auto-fill, 92px); grid-auto-rows: 104px; gap: 6px; }
+        .desktop-icon { display: flex; flex-direction: column; align-items: center; gap: 7px; padding-top: 4px; border-radius: 4px; }
+        .desktop-icon.selected { background: rgba(255,32,32,0.14); outline: 1px dashed rgba(255,92,92,0.4); }
+        .icon-shape-folder { width: 46px; height: 34px; position: relative; background: linear-gradient(180deg, #4a3a12, #332708); border-radius: 1px 5px 4px 4px; box-shadow: 0 3px 6px rgba(0,0,0,0.5); }
+        .icon-shape-folder::before { content: ''; position: absolute; top: -7px; left: 0; width: 20px; height: 8px; background: inherit; border-radius: 3px 3px 0 0; }
+        .icon-shape-file { width: 34px; height: 42px; background: #1b1b1b; border: 1px solid #4a4a4a; position: relative; box-shadow: 0 3px 6px rgba(0,0,0,0.5); }
+        .icon-shape-file::after { content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 9px 9px 0; border-color: transparent #3a3a3a transparent transparent; }
+        .icon-shape-file::before { content: ''; position: absolute; left: 5px; right: 5px; top: 14px; height: 2px; background: repeating-linear-gradient(180deg, #555 0 2px, transparent 2px 6px); box-shadow: 0 6px 0 0 transparent; }
+        .icon-label { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: #e0e0e0; text-align: center; line-height: 1.3; text-shadow: 0 1px 3px rgba(0,0,0,0.9); word-break: keep-all; }
+
+        /* 커스텀 마우스 포인터 */
+        .intro-ptr { position: fixed; left: 0; top: 0; width: 20px; height: 28px; z-index: 40; pointer-events: none; transform: translate(-50%,-50%); transition: transform 0.08s ease; }
+
+        /* 권한 확인 팝업 */
+        .perm-popup { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.25s ease; }
+        .perm-popup.hidden { display: none; }
+        .perm-popup.show { opacity: 1; }
+        .perm-box { width: 420px; max-width: 88vw; background: #141414; border: 1px solid var(--border-color); border-radius: 8px; padding: 30px 28px; font-family: 'JetBrains Mono', monospace; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+        .perm-line { font-size: 0.86rem; color: #d8d8d8; line-height: 1.8; margin-bottom: 10px; min-height: 1.6em; }
+        .perm-line.perm-success { color: var(--label-red); }
+        .perm-line.hidden { display: none; }
+        .perm-btn {
+            margin-top: 8px; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; letter-spacing: 2px; color: #fff;
+            background: rgba(139,0,0,0.2); border: 1px solid var(--label-red); padding: 12px; border-radius: 4px; cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s; opacity: 0; transform: translateY(6px);
+        }
+        .perm-btn.show { opacity: 1; transform: translateY(0); transition: opacity 0.35s ease, transform 0.35s ease, background 0.2s, box-shadow 0.2s; }
+        .perm-btn.hidden { display: none; }
+        .perm-btn:hover { background: rgba(255,32,32,0.3); box-shadow: 0 0 20px rgba(255,32,32,0.3); }
+
+        /* 화면 전환 글리치 플래시 */
+        .intro-flash { position: absolute; inset: 0; z-index: 50; background: #fff; opacity: 0; pointer-events: none; }
+        .intro-glitch { position: absolute; inset: 0; z-index: 25; pointer-events: none; opacity: 0; background: repeating-linear-gradient(0deg, rgba(255,32,32,0.12) 0, rgba(255,32,32,0.12) 2px, transparent 2px, transparent 5px); }
+        .intro-glitch.burst { animation: introGlitchBurst 0.16s ease; }
+        @keyframes introGlitchBurst { 0% { opacity: 0.9; transform: translateX(4px); } 30% { opacity: 0.2; transform: translateX(-5px); } 60% { opacity: 0.8; transform: translateX(5px); } 100% { opacity: 0; transform: none; } }
 
         /* 전체 화면 글리치 플래시 */
         .glitch-flash { position: fixed; inset: 0; z-index: 9998; pointer-events: none; mix-blend-mode: overlay; opacity: 0; background: repeating-linear-gradient(0deg, rgba(255,0,60,0.1) 0px, rgba(255,0,60,0.1) 2px, transparent 2px, transparent 4px); animation: glitchFlash 9s infinite; }
@@ -360,20 +405,56 @@
     <!-- 배경음악 : 노래삽입예정 (아래 audio 태그의 src 부분에 음원 경로를 넣어주세요) -->
     <audio id="bgm" src="노래삽입예정" loop preload="auto"></audio>
 
-    <!-- INTRO -->
+    <!-- INTRO : 터미널 부팅 → 바탕화면 → 폴더 → 파일 → 권한확인 -->
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-noise"></div>
-        <div class="intro-shelf">
-            <div class="intro-book b1"></div>
-            <div class="intro-book b2"></div>
-            <div class="intro-book b3"></div>
-            <div class="intro-book b4 active"><span class="intro-book-label">구원일지</span></div>
-            <div class="intro-book b5"></div>
-            <div class="intro-book b6"></div>
+        <div class="intro-flash" id="introFlash"></div>
+        <div class="intro-glitch" id="introGlitch"></div>
+
+        <!-- 1. 부팅 터미널 -->
+        <div class="boot-screen" id="bootScreen">
+            <div class="boot-terminal">
+                <p class="boot-line" id="bootLine1"></p>
+                <p class="boot-line" id="bootLine2"></p>
+                <p class="boot-line" id="bootLine3"></p>
+                <p class="boot-line boot-success" id="bootLine4"></p>
+            </div>
         </div>
-        <div class="intro-text-wrap" id="introTextWrap">
-            <p class="intro-typewriter"><span id="introTypeText"></span><span class="intro-cursor">▌</span></p>
-            <button class="intro-btn" id="introBtn">기록 확인하기</button>
+
+        <!-- 2. 바탕화면 -->
+        <div class="desktop-screen hidden" id="desktopScreen">
+            <div class="desktop-wallpaper"><span class="wallpaper-mark">NOVA</span></div>
+            <div class="desktop-crt"></div>
+            <div class="desktop-vignette"></div>
+            <div class="desktop-icons" id="desktopIcons"></div>
+            <div class="desktop-taskbar"><span>ARCHIVE TERMINAL</span><span class="dot-live">● CONNECTED</span></div>
+        </div>
+
+        <!-- 3. 폴더 내부 (구출일지) -->
+        <div class="desktop-screen hidden" id="folderScreen">
+            <div class="desktop-wallpaper"><span class="wallpaper-mark">NOVA</span></div>
+            <div class="desktop-crt"></div>
+            <div class="desktop-vignette"></div>
+            <div class="folder-titlebar">📁 기록 보관소 ／ 구출일지</div>
+            <div class="desktop-icons" id="fileIcons" style="top:72px;"></div>
+            <div class="desktop-taskbar"><span>ARCHIVE TERMINAL</span><span class="dot-live">● CONNECTED</span></div>
+        </div>
+
+        <!-- 4. 권한 확인 팝업 -->
+        <div class="perm-popup hidden" id="permPopup">
+            <div class="perm-box">
+                <p class="perm-line hidden" id="permLine1">해당 파일은 권한이 필요합니다.</p>
+                <p class="perm-line hidden" id="permLine2">권한 확인중<span id="permDots"></span></p>
+                <p class="perm-line perm-success hidden" id="permLine3">확인완료. 열람이 가능합니다. 확인하시겠습니까?</p>
+                <button class="perm-btn hidden" id="permBtn">열람</button>
+            </div>
+        </div>
+
+        <!-- 커스텀 마우스 포인터 -->
+        <div class="intro-ptr" id="introPtr">
+            <svg width="20" height="28" viewBox="0 0 20 28" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#f0f0f0" stroke="#000" stroke-width="1" d="M2 2L2 24L6.5 19L9 26L12.5 24.5L10 18L17 18Z"/>
+            </svg>
         </div>
     </div>
 
@@ -944,34 +1025,161 @@
         musicPanel.addEventListener('click', e => e.stopPropagation());
         volumeSlider.addEventListener('input', () => { bgm.volume = volumeSlider.value / 100; });
 
-        // ===================== 인트로 시퀀스 =====================
-        const introOverlay = document.getElementById('introOverlay');
-        const introTypeText = document.getElementById('introTypeText');
-        const introTextWrap = document.getElementById('introTextWrap');
-        const introBtn = document.getElementById('introBtn');
-        const introMessage = '이것은, 수많은 일지기록들 중 하나인\n구원일지의 기록이다.';
-        let typeIdx = 0;
+        // ===================== 인트로 시퀀스 : 부팅 → 바탕화면 → 폴더 → 파일 → 권한확인 =====================
+        (function initIntro() {
+            const introOverlay = document.getElementById('introOverlay');
+            const bootScreen = document.getElementById('bootScreen');
+            const desktopScreen = document.getElementById('desktopScreen');
+            const folderScreen = document.getElementById('folderScreen');
+            const desktopIconsEl = document.getElementById('desktopIcons');
+            const fileIconsEl = document.getElementById('fileIcons');
+            const introPtr = document.getElementById('introPtr');
+            const introFlash = document.getElementById('introFlash');
+            const introGlitch = document.getElementById('introGlitch');
+            const permPopup = document.getElementById('permPopup');
+            const permLine1 = document.getElementById('permLine1');
+            const permLine2 = document.getElementById('permLine2');
+            const permLine3 = document.getElementById('permLine3');
+            const permDots = document.getElementById('permDots');
+            const permBtn = document.getElementById('permBtn');
+            const bootLines = [document.getElementById('bootLine1'), document.getElementById('bootLine2'), document.getElementById('bootLine3'), document.getElementById('bootLine4')];
+            const bootTexts = ['INITIALIZING...', 'CONNECTING TO ARCHIVE...', 'VERIFYING DATABASE...', 'ACCESS GRANTED'];
 
-        function typeIntro() {
-            if (typeIdx <= introMessage.length) {
-                introTypeText.innerHTML = introMessage.slice(0, typeIdx).replace(/\n/g, '<br>');
-                typeIdx++;
-                setTimeout(typeIntro, 55);
-            } else {
-                introBtn.classList.add('show');
+            const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+            async function typeLine(el, text, speed = 32) {
+                el.textContent = '';
+                for (let i = 0; i < text.length; i++) { el.textContent += text[i]; await sleep(speed); }
             }
-        }
-        setTimeout(() => {
-            introTextWrap.classList.add('show');
-            setTimeout(typeIntro, 300);
-        }, 1300);
 
-        introBtn.addEventListener('click', () => {
-            playMusic();
-            introOverlay.classList.add('closing');
-            document.body.classList.remove('intro-active');
-            setTimeout(() => { introOverlay.style.display = 'none'; }, 750);
-        });
+            // 바탕화면 폴더 목록 (구출일지가 목표 폴더)
+            const desktopFolders = ['생존일지', '구출일지', '전쟁일지', '격리일지', '관찰일지', '실험일지', '보고서', '백업', '기타기록', '대혼란일지'];
+            desktopIconsEl.innerHTML = desktopFolders.map(name => `
+                <div class="desktop-icon" data-name="${name}">
+                    <div class="icon-shape-folder"></div>
+                    <span class="icon-label">${name}</span>
+                </div>
+            `).join('');
+
+            // 구출일지 폴더 안의 파일 목록
+            const fileNames = ['01_현장기록.log', '02_구조보고.doc', '03_생존자명부.txt', '04_교신기록.log', '05_잔존개체.rpt'];
+            fileIconsEl.innerHTML = fileNames.map(name => `
+                <div class="desktop-icon" data-name="${name}">
+                    <div class="icon-shape-file"></div>
+                    <span class="icon-label">${name}</span>
+                </div>
+            `).join('');
+
+            function getCenter(el) { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+
+            function movePtr(el, duration = 1100) {
+                return new Promise(resolve => {
+                    const target = getCenter(el);
+                    const startX = parseFloat(introPtr.dataset.x || window.innerWidth * 0.12);
+                    const startY = parseFloat(introPtr.dataset.y || window.innerHeight * 0.88);
+                    const start = performance.now();
+                    function frame(t) {
+                        let p = (t - start) / duration; if (p > 1) p = 1;
+                        const ease = 1 - Math.pow(1 - p, 3);
+                        const curve = Math.sin(p * Math.PI) * 16;
+                        const x = startX + (target.x - startX) * ease;
+                        const y = startY + (target.y - startY) * ease - curve;
+                        introPtr.style.left = x + 'px'; introPtr.style.top = y + 'px';
+                        introPtr.dataset.x = x; introPtr.dataset.y = y;
+                        if (p < 1) requestAnimationFrame(frame); else resolve();
+                    }
+                    requestAnimationFrame(frame);
+                });
+            }
+
+            async function ptrDoubleClick(el) {
+                el.classList.add('selected');
+                introPtr.style.transform = 'translate(-50%,-50%) scale(0.85)';
+                await sleep(90);
+                introPtr.style.transform = 'translate(-50%,-50%) scale(1)';
+                await sleep(80);
+                introPtr.style.transform = 'translate(-50%,-50%) scale(0.85)';
+                await sleep(90);
+                introPtr.style.transform = 'translate(-50%,-50%) scale(1)';
+            }
+
+            function glitchBurst() {
+                introGlitch.classList.remove('burst'); void introGlitch.offsetWidth; introGlitch.classList.add('burst');
+            }
+            async function flashScreen() {
+                introFlash.style.transition = 'none'; introFlash.style.opacity = '0.4';
+                await sleep(40);
+                introFlash.style.transition = 'opacity 0.35s ease'; introFlash.style.opacity = '0';
+            }
+
+            async function runIntro() {
+                // 1) 부팅
+                introPtr.style.opacity = '0';
+                for (let i = 0; i < bootTexts.length; i++) {
+                    await typeLine(bootLines[i], bootTexts[i]);
+                    await sleep(300);
+                }
+                await sleep(600);
+                await flashScreen();
+                bootScreen.classList.add('hidden');
+                desktopScreen.classList.remove('hidden');
+                requestAnimationFrame(() => desktopScreen.classList.add('visible'));
+                introPtr.style.opacity = '1';
+                introPtr.style.left = window.innerWidth * 0.12 + 'px';
+                introPtr.style.top = window.innerHeight * 0.88 + 'px';
+                introPtr.dataset.x = window.innerWidth * 0.12;
+                introPtr.dataset.y = window.innerHeight * 0.88;
+
+                // 2) 바탕화면에서 구출일지 폴더로 이동 후 더블클릭
+                await sleep(700);
+                const targetFolder = desktopIconsEl.querySelector('[data-name="구출일지"]');
+                await movePtr(targetFolder, 1300);
+                await sleep(300);
+                await ptrDoubleClick(targetFolder);
+                glitchBurst();
+                await sleep(220);
+
+                // 3) 폴더 내부로 전환
+                desktopScreen.classList.remove('visible');
+                desktopScreen.classList.add('hidden');
+                folderScreen.classList.remove('hidden');
+                requestAnimationFrame(() => folderScreen.classList.add('visible'));
+                await sleep(500);
+
+                // 4) 파일로 이동 후 더블클릭
+                const targetFile = fileIconsEl.querySelector('[data-name="01_현장기록.log"]');
+                await movePtr(targetFile, 1000);
+                await sleep(250);
+                await ptrDoubleClick(targetFile);
+                glitchBurst();
+                await sleep(200);
+
+                // 5) 권한 확인 팝업
+                permPopup.classList.remove('hidden');
+                requestAnimationFrame(() => permPopup.classList.add('show'));
+                permLine1.classList.remove('hidden');
+                await sleep(750);
+                permLine2.classList.remove('hidden');
+                let dotCount = 0;
+                const dotTimer = setInterval(() => { dotCount = (dotCount + 1) % 5; permDots.textContent = ' ' + '. '.repeat(dotCount); }, 260);
+                await sleep(1700);
+                clearInterval(dotTimer);
+                permDots.textContent = ' . . . .';
+                await sleep(300);
+                permLine3.classList.remove('hidden');
+                permBtn.classList.remove('hidden');
+                requestAnimationFrame(() => permBtn.classList.add('show'));
+            }
+
+            document.getElementById('permBtn').addEventListener('click', () => {
+                playMusic();
+                introOverlay.classList.add('closing');
+                document.body.classList.remove('intro-active');
+                setTimeout(() => { introOverlay.style.display = 'none'; }, 750);
+            });
+
+            runIntro();
+        })();
 
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
