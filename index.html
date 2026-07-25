@@ -32,32 +32,72 @@
         }
 
         html { scroll-behavior: smooth; }
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Noto Sans KR', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+        body { background-color: var(--bg-primary); color: var(--text-primary); font-family: 'Noto Sans KR', sans-serif; overflow-x: hidden; line-height: 1.6; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--accent-red); border-radius: 3px; }
         :focus-visible { outline: 2px solid var(--label-red); outline-offset: 3px; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
         button { font-family: inherit; }
+
+        body.intro-active { overflow: hidden; height: 100vh; }
+
+        /* ========== 인트로 ========== */
+        .intro-overlay {
+            position: fixed; inset: 0; z-index: 5000; background: #050505; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; overflow: hidden; transition: opacity 0.7s ease;
+        }
+        .intro-overlay.closing { opacity: 0; pointer-events: none; }
+        .intro-noise {
+            position: absolute; inset: 0; opacity: 0.035; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        .intro-shelf { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 56px; height: 220px; position: relative; z-index: 1; }
+        .intro-book { position: relative; width: 34px; border-radius: 3px 3px 0 0; border: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(40px) rotate(0deg); animation: bookIn 0.6s ease forwards; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        @keyframes bookIn { to { opacity: 1; transform: translateY(0) rotate(var(--r, 0deg)); } }
+        .intro-book.b1 { height: 170px; --r: -4deg; background: linear-gradient(180deg,#1a2c3d,#0e161d); animation-delay: 0.05s; }
+        .intro-book.b2 { height: 190px; --r: 2deg; background: linear-gradient(180deg,#2c2410,#16110a); animation-delay: 0.15s; }
+        .intro-book.b3 { height: 160px; --r: -2deg; background: linear-gradient(180deg,#132a17,#0a150c); animation-delay: 0.25s; }
+        .intro-book.b4 { height: 210px; width: 40px; animation-delay: 0.35s; }
+        .intro-book.b5 { height: 175px; --r: 3deg; background: linear-gradient(180deg,#241a2c,#120d16); animation-delay: 0.45s; }
+        .intro-book.b6 { height: 150px; --r: -3deg; background: linear-gradient(180deg,#2a1414,#150a0a); animation-delay: 0.55s; }
+        .intro-book.active {
+            background: linear-gradient(180deg, #3a0f0f, #1a0505); border-color: rgba(255,92,92,0.55);
+            box-shadow: 0 0 30px rgba(255,32,32,0.35), 0 14px 24px rgba(0,0,0,0.6);
+            transform: translateY(-18px) scale(1.08); animation-delay: 0.35s;
+        }
+        .intro-book-label { writing-mode: vertical-rl; text-orientation: upright; color: var(--label-red); font-size: 0.68rem; letter-spacing: 3px; position: absolute; top: 14px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; }
+        .intro-text-wrap { text-align: center; padding: 0 20px; opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; position: relative; z-index: 1; max-width: 480px; }
+        .intro-text-wrap.show { opacity: 1; transform: translateY(0); }
+        .intro-typewriter { font-size: 1.05rem; color: #e8e8e8; line-height: 1.9; min-height: 3.6em; margin-bottom: 26px; font-weight: 300; letter-spacing: 0.3px; }
+        .intro-cursor { display: inline-block; color: var(--label-red); animation: blinkCursor 0.9s steps(1) infinite; }
+        @keyframes blinkCursor { 50% { opacity: 0; } }
+        .intro-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 2px; color: #fff; background: rgba(139,0,0,0.15);
+            border: 1px solid var(--label-red); padding: 12px 30px; border-radius: 3px; cursor: pointer; opacity: 0; transform: translateY(8px);
+            transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s, box-shadow 0.2s;
+        }
+        .intro-btn.show { opacity: 1; transform: translateY(0); }
+        .intro-btn:hover { background: rgba(255,32,32,0.25); box-shadow: 0 0 24px rgba(255,32,32,0.35); }
+
+        /* 전체 화면 글리치 플래시 */
+        .glitch-flash { position: fixed; inset: 0; z-index: 9998; pointer-events: none; mix-blend-mode: overlay; opacity: 0; background: repeating-linear-gradient(0deg, rgba(255,0,60,0.1) 0px, rgba(255,0,60,0.1) 2px, transparent 2px, transparent 4px); animation: glitchFlash 9s infinite; }
+        @keyframes glitchFlash {
+            0%, 96%, 100% { opacity: 0; transform: translateX(0); }
+            96.4% { opacity: 0.5; transform: translateX(-6px); }
+            96.9% { opacity: 0.2; transform: translateX(4px); }
+            97.4% { opacity: 0.4; transform: translateX(-2px); }
+            98% { opacity: 0; transform: translateX(0); }
+        }
 
         /* ========== HERO ========== */
         .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* ![](https://toi.itoo.uk/qorud.png) */
+            /* 외부이미지칸 - 히어로 배경 (폐허/아포칼립스 도시 배경) */
             background: url('외부이미지칸') center/cover no-repeat;
             filter: brightness(0.2) saturate(0.3); z-index: 0;
         }
-        .hero::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
-            background: linear-gradient(transparent, var(--bg-primary)); z-index: 1;
-        }
+        .hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(transparent, var(--bg-primary)); z-index: 1; }
         .hero-ambient { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
         .hero-blob { position: absolute; width: 40vw; height: 40vw; border-radius: 50%; filter: blur(110px); opacity: 0.16; animation: float 14s ease-in-out infinite; }
         .hero-blob.b-nova { background: var(--nova-color); top: -10%; left: -8%; }
@@ -65,28 +105,47 @@
         .hero-blob.b-revenant { background: var(--revenant-color); bottom: -15%; left: 10%; animation-delay: -7s; }
         .hero-blob.b-trickster { background: var(--trickster-color); bottom: -10%; right: 5%; animation-delay: -10s; }
         @keyframes float { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(3%,-4%) scale(1.08); } }
-        .hero-grid {
-            position: absolute; inset: 0; z-index: 1;
-            background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 40%, transparent 90%);
-        }
-        .hero-scanline {
-            position: absolute; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,32,32,0.35), transparent);
-            z-index: 1; animation: scan 6s linear infinite;
-        }
+        .hero-grid { position: absolute; inset: 0; z-index: 1; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 40%, transparent 90%); }
+        .hero-scanline { position: absolute; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,32,32,0.35), transparent); z-index: 1; animation: scan 6s linear infinite; }
         @keyframes scan { 0% { top: -5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 105%; opacity: 0; } }
         .hero-content { position: relative; z-index: 2; text-align: center; animation: fadeInUp 1.5s ease; padding: 0 20px; }
-        .hero-tag {
-            display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem; color: var(--label-red); letter-spacing: 4px; text-transform: uppercase;
-            margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(255,92,92,0.4); border-radius: 3px; background: rgba(139,0,0,0.08);
-        }
+        .hero-tag { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--label-red); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 26px; padding: 6px 16px; border: 1px solid rgba(255,92,92,0.4); border-radius: 3px; background: rgba(139,0,0,0.08); }
         .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--label-red); box-shadow: 0 0 8px var(--label-red); animation: pulse-dot 1.6s ease-in-out infinite; }
         @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .hero-title { font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 4rem; color: #fff; text-shadow: 0 0 50px rgba(139,0,0,0.45); margin-bottom: 22px; letter-spacing: -1px; line-height: 1.15; }
-        .hero-title .colon { color: var(--label-red); font-weight: 300; margin: 0 6px; }
+
+        .hero-title-main {
+            position: relative; font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 4.8rem;
+            color: #f2e9e9; letter-spacing: -2px; line-height: 1; margin-bottom: 6px;
+            text-shadow: 0 0 4px rgba(255,32,32,0.5), 0 0 60px rgba(139,0,0,0.5);
+            animation: titleJitter 6.4s infinite;
+        }
+        @keyframes titleJitter {
+            0%, 91%, 100% { transform: translate(0,0); filter: none; }
+            91.5% { transform: translate(-3px,1px); filter: blur(0.4px); }
+            92.2% { transform: translate(2px,-1px); filter: none; }
+            93% { transform: translate(-1px,0); filter: blur(0.6px); }
+            93.6% { transform: translate(0,0); filter: none; }
+        }
+        .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; color: var(--accent-red-glow); opacity: 0; }
+        .glitch::before { animation: glitch-1 6.4s infinite; }
+        .glitch::after { animation: glitch-2 6.4s infinite; }
+        @keyframes glitch-1 {
+            0%, 91%, 96%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate(0,0); }
+            91.5% { opacity: 0.85; clip-path: inset(8% 0 62% 0); transform: translate(-6px,-1px); }
+            92.3% { opacity: 0.7; clip-path: inset(48% 0 15% 0); transform: translate(4px,2px); }
+            93.1% { opacity: 0.8; clip-path: inset(20% 0 45% 0); transform: translate(-3px,1px); }
+            94% { opacity: 0.5; clip-path: inset(65% 0 5% 0); transform: translate(5px,-2px); }
+            95% { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate(0,0); }
+        }
+        @keyframes glitch-2 {
+            0%, 91%, 96%, 100% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate(0,0); }
+            91.8% { opacity: 0.7; clip-path: inset(70% 0 8% 0); transform: translate(5px,1px); }
+            92.6% { opacity: 0.85; clip-path: inset(10% 0 68% 0); transform: translate(-4px,-2px); }
+            93.5% { opacity: 0.6; clip-path: inset(40% 0 30% 0); transform: translate(3px,2px); }
+            94.5% { opacity: 0.4; clip-path: inset(75% 0 5% 0); transform: translate(-5px,1px); }
+            95.3% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate(0,0); }
+        }
+        .hero-title-sub { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.95rem; color: var(--label-red); letter-spacing: 5px; margin-bottom: 22px; opacity: 0.85; }
         .hero-rule { width: 60px; height: 2px; background: linear-gradient(90deg, var(--accent-red-glow), transparent); margin: 0 auto 26px; }
         .hero-desc { font-size: 0.98rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto 10px; font-weight: 300; line-height: 1.9; }
         .hero-year { font-family: 'JetBrains Mono', monospace; font-size: 5rem; font-weight: 700; color: rgba(255,255,255,0.03); position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); letter-spacing: 20px; z-index: 1; }
@@ -105,21 +164,21 @@
         .nav-links { display: flex; gap: 30px; list-style: none; }
         .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; transition: color 0.3s; }
         .nav-links a:hover { color: var(--label-red); }
-        .music-control { position: relative; display: flex; align-items: center; }
-        .music-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.95rem; transition: border-color 0.2s, color 0.2s; }
+        .music-control { position: relative; display: flex; align-items: center; gap: 6px; }
+        .music-btn, .music-vol-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.95rem; transition: border-color 0.2s, color 0.2s; }
         .music-btn:hover, .music-btn.playing { border-color: var(--accent-red-glow); color: var(--label-red); }
+        .music-vol-btn:hover, .music-vol-btn.open { border-color: var(--accent-red-glow); color: var(--label-red); }
         .music-panel { position: absolute; top: 44px; right: 0; background: rgba(17,17,17,0.97); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; width: 190px; display: none; flex-direction: column; gap: 10px; backdrop-filter: blur(8px); }
         .music-panel.open { display: flex; }
         .music-panel-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--label-red); letter-spacing: 1px; }
         .music-panel input[type="range"] { width: 100%; accent-color: var(--accent-red-glow); }
         .music-panel .track-name { font-size: 0.72rem; color: var(--text-secondary); }
-        .music-panel .play-toggle { margin-top: 4px; padding: 6px 10px; font-size: 0.72rem; background: rgba(139,0,0,0.15); border: 1px solid var(--accent-red-glow); color: #fff; border-radius: 4px; cursor: pointer; }
 
         /* ========== SECTION COMMON ========== */
         section { padding: 120px 50px; max-width: 1400px; margin: 0 auto; }
         .section-header { margin-bottom: 60px; }
         .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--label-red); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 10px; }
-        .section-title { font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 2.4rem; color: #fff; margin-bottom: 15px; letter-spacing: -0.5px; }
+        .section-title { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; font-size: 2.4rem; color: #fff; margin-bottom: 15px; letter-spacing: -1px; }
         .section-desc { color: var(--text-secondary); max-width: 700px; font-size: 0.95rem; line-height: 1.8; }
 
         /* ========== WORLD ========== */
@@ -130,31 +189,32 @@
         .timeline-title { font-size: 1.3rem; color: #fff; margin-bottom: 8px; font-weight: 700; }
         .timeline-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
 
-        /* ========== FACTIONS ========== */
-        .faction-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 40px; }
-        .faction-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; transition: transform 0.3s, border-color 0.3s; position: relative; overflow: hidden; }
-        .faction-card:hover { transform: translateY(-5px); }
-        .faction-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
-        .faction-card.nova::before { background: var(--nova-color); }
-        .faction-card.cheonwoo::before { background: var(--cheonwoo-color); }
-        .faction-card.revenant::before { background: var(--revenant-color); }
-        .faction-card.trickster::before { background: var(--trickster-color); }
-        .faction-card.nova:hover { border-color: var(--nova-color); }
-        .faction-card.cheonwoo:hover { border-color: var(--cheonwoo-color); }
-        .faction-card.revenant:hover { border-color: var(--revenant-color); }
-        .faction-card.trickster:hover { border-color: var(--trickster-color); }
-        .faction-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
-        .faction-card.nova .faction-icon { background: rgba(33,150,243,0.15); }
-        .faction-card.cheonwoo .faction-icon { background: rgba(255,215,0,0.15); }
-        .faction-card.revenant .faction-icon { background: rgba(76,175,80,0.15); }
-        .faction-card.trickster .faction-icon { background: rgba(156,39,176,0.15); }
-        .faction-name { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
-        .faction-subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 15px; letter-spacing: 1px; }
-        .faction-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
-        .faction-location { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary); }
-        .faction-location span { color: var(--label-red); }
+        /* ========== FACTIONS (리스트형) ========== */
+        .faction-list { display: flex; flex-direction: column; gap: 10px; margin-top: 40px; }
+        .faction-item { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-card); transition: border-color 0.2s; }
+        .faction-item.open { border-color: rgba(255,255,255,0.18); }
+        .faction-row { width: 100%; display: flex; align-items: center; gap: 16px; padding: 20px 24px; background: transparent; border: none; color: var(--text-primary); cursor: pointer; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; flex-wrap: wrap; }
+        .faction-row-mark { font-size: 1.3rem; font-weight: 700; line-height: 1; }
+        .faction-row-name { font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 1.05rem; color: #fff; }
+        .faction-row-loc { color: var(--text-secondary); }
+        .faction-row-sub { color: var(--text-secondary); flex: 1; min-width: 220px; }
+        .faction-row-arrow { margin-left: auto; color: var(--label-red); transition: transform 0.25s; font-size: 1rem; }
+        .faction-item.open .faction-row-arrow { transform: rotate(180deg); }
+        .faction-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .faction-item.open .faction-detail { max-height: 460px; }
+        .faction-detail-inner { padding: 0 24px 24px; border-top: 1px solid var(--border-color); padding-top: 20px; margin: 0 24px; }
+        .faction-detail-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; margin-bottom: 18px; }
+        .faction-team-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .team-chip { font-size: 0.78rem; padding: 6px 14px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; transition: all 0.2s; }
+        .team-chip:hover, .team-chip.active { border-color: var(--label-red); color: var(--label-red); }
+        .faction-team-desc { font-size: 0.86rem; color: var(--text-primary); line-height: 1.7; min-height: 1.4em; padding-top: 10px; border-top: 1px dashed var(--border-color); }
 
         /* ========== CHARACTERS ========== */
+        .char-tabs { display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
+        .char-tab { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 1px; color: var(--text-secondary); background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+        .char-tab:hover { border-color: var(--label-red); color: #fff; }
+        .char-tab.active { background: rgba(255,32,32,0.15); border-color: var(--label-red); color: #fff; }
+
         .char-faction-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 26px; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
         .char-faction-title .dot { width: 10px; height: 10px; border-radius: 50%; }
         .char-faction-title .dot.nova { background: var(--nova-color); }
@@ -162,36 +222,37 @@
         .char-faction-title .dot.revenant { background: var(--revenant-color); }
         .char-faction-title .dot.trickster { background: var(--trickster-color); }
 
-        .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; margin-bottom: 80px; }
-        .char-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; cursor: pointer; text-align: left; width: 100%;
-            color: inherit; position: relative;
-        }
+        .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; margin-bottom: 70px; }
+        .char-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; cursor: pointer; text-align: left; width: 100%; color: inherit; position: relative; }
         .char-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--fac-color, var(--accent-red-glow)); z-index: 2; }
         .char-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.15); }
         .char-img-wrap { position: relative; width: 100%; height: 230px; overflow: hidden; background: #1c1c1c; }
         .char-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
         .char-card:hover .char-img-wrap img { transform: scale(1.06); }
-        .char-img-overlay {
-            position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px;
-            background: linear-gradient(transparent 40%, rgba(0,0,0,0.75));
-            opacity: 0; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease;
-        }
+        .char-img-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px; background: linear-gradient(transparent 40%, rgba(0,0,0,0.75)); opacity: 0; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease; }
         .char-card:hover .char-img-overlay { opacity: 1; transform: translateY(0); }
         .char-img-overlay span { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 1px; color: var(--label-red); border: 1px solid var(--label-red); padding: 4px 12px; border-radius: 20px; background: rgba(0,0,0,0.4); }
-        .char-info { padding: 14px 16px 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-        .char-name { font-size: 1.02rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-        .char-role-line { font-size: 0.76rem; color: var(--text-secondary); }
-        .char-info-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-        .char-info-stats .stat { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-secondary); background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); padding: 2px 8px; border-radius: 10px; }
+        .char-info { padding: 14px 16px 16px; }
+        .char-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .char-role-line { font-size: 0.78rem; color: var(--text-secondary); }
+
+        /* ========== 위험등급 범례 ========== */
+        .danger-legend { margin-top: 30px; display: flex; align-items: stretch; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-card); }
+        .legend-chip { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 16px 8px 13px; font-family: 'JetBrains Mono', monospace; border-right: 1px solid var(--border-color); border-bottom: 3px solid transparent; background: rgba(255,255,255,0.015); text-align: center; }
+        .legend-chip:last-child { border-right: none; }
+        .legend-chip .lv { font-size: 0.88rem; font-weight: 700; letter-spacing: 1px; }
+        .legend-chip .lbl { font-size: 0.72rem; color: var(--text-secondary); letter-spacing: 1px; }
+        .legend-chip.v0 { border-bottom-color: var(--danger-v0); } .legend-chip.v0 .lv { color: var(--danger-v0); }
+        .legend-chip.v1 { border-bottom-color: var(--danger-v1); } .legend-chip.v1 .lv { color: var(--danger-v1); }
+        .legend-chip.v2 { border-bottom-color: var(--danger-v2); } .legend-chip.v2 .lv { color: var(--danger-v2); }
+        .legend-chip.v3 { border-bottom-color: var(--danger-v3); } .legend-chip.v3 .lv { color: var(--danger-v3); }
+        .legend-chip.v4 { border-bottom-color: var(--danger-v4); } .legend-chip.v4 .lv { color: var(--danger-v4); }
+        .legend-chip.v5 { border-bottom-color: var(--danger-v5); } .legend-chip.v5 .lv { color: var(--danger-v5); }
+        @media (max-width: 768px) { .danger-legend { flex-wrap: wrap; } .legend-chip { flex: 1 1 33%; border-bottom-width: 3px; } }
 
         /* ========== NO 카드 ========== */
         .no-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-        .no-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
-            position: relative; transition: transform 0.3s, border-color 0.3s; cursor: pointer; text-align: left; width: 100%; color: inherit;
-        }
+        .no-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; position: relative; transition: transform 0.3s, border-color 0.3s; cursor: pointer; text-align: left; width: 100%; color: inherit; }
         .no-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
         .no-card-img { position: relative; width: 100%; height: 190px; overflow: hidden; background: #161616; }
         .no-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease, filter 0.4s ease; filter: grayscale(20%) contrast(1.05); }
@@ -199,10 +260,7 @@
         .no-card-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgba(0,0,0,0.85)); }
         .no-card-danger-tag { position: absolute; top: 10px; left: 10px; z-index: 2; }
         .no-card-body { padding: 14px 16px 16px; }
-        .no-danger {
-            display: inline-block; font-size: 0.66rem; padding: 4px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px;
-            font-family: 'JetBrains Mono', monospace; backdrop-filter: blur(4px);
-        }
+        .no-danger { display: inline-block; font-size: 0.66rem; padding: 4px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; backdrop-filter: blur(4px); }
         .no-danger.v0 { background: rgba(139,195,74,0.2); color: var(--danger-v0); border: 1px solid var(--danger-v0); }
         .no-danger.v1 { background: rgba(205,220,57,0.2); color: var(--danger-v1); border: 1px solid var(--danger-v1); }
         .no-danger.v2 { background: rgba(255,193,7,0.2); color: var(--danger-v2); border: 1px solid var(--danger-v2); }
@@ -213,7 +271,7 @@
         .no-name { font-size: 1.08rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
         .no-click-hint { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--label-red); letter-spacing: 1px; opacity: 0.85; }
 
-        /* ========== 모달 공통 (기밀문서 스타일) ========== */
+        /* ========== 모달 공통 ========== */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.86); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 30px 16px; overflow-y: auto; }
         .modal-overlay.open { display: flex; }
         .modal-box {
@@ -222,48 +280,32 @@
             background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
         }
         @keyframes modalIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .corner { position: absolute; width: 20px; height: 20px; border-color: var(--label-red); opacity: 0.85; z-index: 6; pointer-events: none; }
-        .corner-tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
-        .corner-tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
-        .corner-bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
-        .corner-br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
-        .modal-close {
-            position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
-            border: 1px solid var(--border-color); background: rgba(0,0,0,0.55); color: #fff; font-size: 0.95rem; cursor: pointer; z-index: 7;
-        }
+        .modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.55); color: #fff; font-size: 0.95rem; cursor: pointer; z-index: 7; }
         .modal-close:hover { border-color: var(--label-red); color: var(--label-red); }
-        .dossier-stamp {
-            position: absolute; top: 22px; left: 26px; z-index: 6; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
-            letter-spacing: 2px; color: var(--label-red); border: 2px solid var(--label-red); padding: 3px 9px; border-radius: 3px;
-            transform: rotate(-6deg); background: rgba(0,0,0,0.4);
-        }
+        .dossier-stamp { position: absolute; top: 22px; left: 26px; z-index: 6; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 2px; color: var(--label-red); border: 2px solid var(--label-red); padding: 3px 9px; border-radius: 3px; transform: rotate(-6deg); background: rgba(0,0,0,0.4); }
         .dossier-id { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-secondary); letter-spacing: 1px; margin-bottom: 10px; }
         .modal-header { position: relative; padding: 56px 34px 22px; border-bottom: 1px solid var(--border-color); }
         .modal-badge-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
         .modal-name { font-size: 1.55rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
         .modal-sub { font-size: 0.85rem; color: var(--text-secondary); }
         .modal-body { padding: 28px 34px 34px; position: relative; }
-        .modal-section { margin-bottom: 22px; }
+        .modal-section { margin-bottom: 24px; }
         .modal-section:last-child { margin-bottom: 0; }
-        .modal-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--label-red); letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+        .modal-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; font-weight: 700; color: var(--label-red); letter-spacing: 1.5px; margin-bottom: 9px; text-transform: uppercase; }
         .modal-section-text { font-size: 0.92rem; color: var(--text-primary); line-height: 1.8; }
+        .modal-section-text.placeholder { color: var(--text-secondary); font-style: italic; opacity: 0.7; }
         .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; }
         .modal-tag { font-size: 0.72rem; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .quote-box { font-size: 0.95rem; padding: 14px 18px; border-left: 2px solid var(--label-red); background: rgba(255,255,255,0.03); border-radius: 4px; font-style: italic; line-height: 1.7; }
+        .quote-box.empty { color: var(--text-secondary); opacity: 0.65; }
 
-        /* 캐릭터 모달 - 이미지 캐러셀 */
+        /* 캐릭터 모달 - 캐러셀 */
         .modal-carousel { position: relative; width: 100%; aspect-ratio: 16/10; background: #111; overflow: hidden; }
         .carousel-track { display: flex; height: 100%; transition: transform 0.4s ease; }
         .carousel-slide { min-width: 100%; height: 100%; position: relative; }
         .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .carousel-slide .slide-fallback {
-            position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 6px; color: var(--text-secondary); font-size: 0.75rem; text-align: center; background: #171717;
-        }
-        .carousel-arrow {
-            position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%;
-            background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); color: #fff; font-size: 1.3rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; line-height: 0;
-        }
+        .carousel-slide .slide-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--text-secondary); font-size: 0.75rem; text-align: center; background: #171717; }
+        .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); color: #fff; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; line-height: 0; }
         .carousel-arrow.left { left: 14px; }
         .carousel-arrow.right { right: 14px; }
         .carousel-arrow:hover { border-color: var(--label-red); color: var(--label-red); }
@@ -275,18 +317,15 @@
         .no-modal-img-wrap { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #141414; }
         .no-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .tape-wrap { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
-        .tape-strip {
-            position: absolute; left: -12%; width: 124%; height: 46px;
-            background: repeating-linear-gradient(45deg, #141414 0 16px, var(--label-red) 16px 32px);
-            color: #fff; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.78rem; letter-spacing: 3px;
-            display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-            box-shadow: 0 0 18px rgba(0,0,0,0.6); transition: transform 0.7s ease, opacity 0.55s ease;
-        }
+        .tape-strip { position: absolute; left: -12%; width: 124%; height: 46px; background: repeating-linear-gradient(45deg, #141414 0 16px, var(--label-red) 16px 32px); color: #fff; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.78rem; letter-spacing: 3px; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 4px rgba(0,0,0,0.8); box-shadow: 0 0 18px rgba(0,0,0,0.6); transition: transform 0.7s ease, opacity 0.55s ease; }
         .tape-1 { top: 26%; transform: rotate(-7deg); }
         .tape-2 { top: 56%; transform: rotate(6deg); transition-delay: 0.12s; }
         .tape-wrap.reveal .tape-1 { transform: translateX(-150%) rotate(-24deg); opacity: 0; }
         .tape-wrap.reveal .tape-2 { transform: translateX(150%) rotate(24deg); opacity: 0; }
-        .no-record-box { font-size: 0.9rem; padding: 16px 18px; background: rgba(139,0,0,0.1); border-left: 2px solid var(--accent-red-glow); border-radius: 4px; color: var(--text-primary); line-height: 1.85; }
+        .reveal-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 1px; color: #fff; background: rgba(139,0,0,0.18); border: 1px solid var(--label-red); padding: 11px 22px; border-radius: 4px; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
+        .reveal-btn:hover { background: rgba(255,32,32,0.28); box-shadow: 0 0 18px rgba(255,32,32,0.3); }
+        .no-counter-box { margin-top: 14px; font-size: 0.9rem; padding: 16px 18px; background: rgba(139,0,0,0.1); border-left: 2px solid var(--accent-red-glow); border-radius: 4px; color: var(--text-primary); line-height: 1.85; }
+        .no-counter-box.hidden { display: none; }
 
         /* ========== FOOTER ========== */
         footer { padding: 60px 50px; border-top: 1px solid var(--border-color); text-align: center; }
@@ -295,38 +334,48 @@
         .footer-warning { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--label-red); padding: 15px 25px; border: 1px solid rgba(255,92,92,0.35); border-radius: 6px; display: inline-block; letter-spacing: 1px; }
 
         /* ========== RESPONSIVE ========== */
-        @media (max-width: 1024px) {
-            .faction-grid { grid-template-columns: 1fr; }
-            .hero-title { font-size: 2.8rem; }
-            section { padding: 80px 30px; }
-        }
+        @media (max-width: 1024px) { .hero-title-main { font-size: 3rem; } section { padding: 80px 30px; } }
         @media (max-width: 768px) {
-            .nav { padding: 14px 20px; }
-            .nav-links { display: none; }
-            .hero-title { font-size: 2.1rem; }
+            .nav { padding: 14px 20px; } .nav-links { display: none; }
+            .hero-title-main { font-size: 2.2rem; } .hero-title-sub { font-size: 0.85rem; letter-spacing: 6px; }
             .section-title { font-size: 1.8rem; }
             .char-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
             .no-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
             section { padding: 60px 20px; }
-            .modal-header { padding: 54px 20px 20px; }
-            .modal-body { padding: 22px 20px 26px; }
+            .modal-header { padding: 54px 20px 20px; } .modal-body { padding: 22px 20px 26px; }
+            .faction-row { padding: 16px 18px; } .faction-detail-inner { margin: 0 18px; padding: 16px 0 20px; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
         }
 
-        .noise-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.02;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
+        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.02; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
     </style>
 </head>
-<body>
+<body class="intro-active">
 
     <div class="noise-overlay"></div>
+    <div class="glitch-flash"></div>
 
     <!-- 배경음악 : 노래삽입예정 (아래 audio 태그의 src 부분에 음원 경로를 넣어주세요) -->
-    <audio id="bgm" src="NOVA브금" loop preload="none"></audio>
+    <audio id="bgm" src="노래삽입예정" loop preload="auto"></audio>
+
+    <!-- INTRO -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-noise"></div>
+        <div class="intro-shelf">
+            <div class="intro-book b1"></div>
+            <div class="intro-book b2"></div>
+            <div class="intro-book b3"></div>
+            <div class="intro-book b4 active"><span class="intro-book-label">구원일지</span></div>
+            <div class="intro-book b5"></div>
+            <div class="intro-book b6"></div>
+        </div>
+        <div class="intro-text-wrap" id="introTextWrap">
+            <p class="intro-typewriter"><span id="introTypeText"></span><span class="intro-cursor">▌</span></p>
+            <button class="intro-btn" id="introBtn">기록 확인하기</button>
+        </div>
+    </div>
 
     <!-- NAVIGATION -->
     <nav class="nav" id="navbar">
@@ -339,12 +388,12 @@
                 <li><a href="#entities">비정상존재</a></li>
             </ul>
             <div class="music-control">
-                <button class="music-btn" id="musicBtn" aria-label="배경음악 패널 열기" title="배경음악">🔇</button>
+                <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지" title="재생/정지">🔊</button>
+                <button class="music-vol-btn" id="musicVolBtn" aria-label="음량 조절" title="음량">⋮</button>
                 <div class="music-panel" id="musicPanel">
-                    <p class="music-panel-label">◈ BGM CONTROL</p>
+                    <p class="music-panel-label">◈ VOLUME</p>
                     <p class="track-name">노래삽입예정</p>
                     <input type="range" id="volumeSlider" min="0" max="100" value="20">
-                    <button class="play-toggle" id="playToggleBtn">▶ 재생 / 정지</button>
                 </div>
             </div>
         </div>
@@ -353,21 +402,20 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-ambient">
-            <span class="hero-blob b-nova"></span>
-            <span class="hero-blob b-cheonwoo"></span>
-            <span class="hero-blob b-revenant"></span>
-            <span class="hero-blob b-trickster"></span>
+            <span class="hero-blob b-nova"></span><span class="hero-blob b-cheonwoo"></span>
+            <span class="hero-blob b-revenant"></span><span class="hero-blob b-trickster"></span>
         </div>
         <div class="hero-grid"></div>
         <div class="hero-scanline"></div>
         <div class="hero-content">
             <p class="hero-tag">Non-Ordinary Verification Agency ｜ CLASSIFIED</p>
-            <h1 class="hero-title">구출일지<span class="colon">：</span>구원자들</h1>
+            <h1 class="hero-title-main glitch" data-text="구출일지">구출일지</h1>
+            <p class="hero-title-sub">구원자들</p>
             <div class="hero-rule"></div>
             <p class="hero-desc">
-                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출하였다.<br>
-                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어가고있다.<br>
-                이곳은 경기도 가평군, 2027년. 구원은 아직 오지 않았다.
+                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출했다.<br>
+                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어간다.<br>
+                경기도 가평군. 2027년. 구원은 아직 오지 않았다.
             </p>
         </div>
         <span class="hero-year">2027</span>
@@ -383,19 +431,19 @@
         </div>
         <div class="world-timeline">
             <div class="timeline-item">
-                <p class="timeline-year">2026.02.07 — 탈출 사태</p>
+                <p class="timeline-year">2026 — 탈출 사태</p>
                 <h3 class="timeline-title">격리 붕괴</h3>
-                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출하였다. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 잔존 NO들은 여전히 활동 중이다.</p>
+                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출. 원인 불명. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 잔존 NO들은 여전히 활동 중이다.</p>
             </div>
             <div class="timeline-item">
-                <p class="timeline-year">2026.02.07 — 사태 초기</p>
+                <p class="timeline-year">2026 — 사태 초기</p>
                 <h3 class="timeline-title">NOVA 공개</h3>
-                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. 몇몇 NO 제압에는 성공했으나 아직까진 많은 잔존 개체들의 활동이 계속되고 있다.</p>
+                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. NO 제압에는 성공했으나 잔존 개체들의 활동이 계속되고 있다.</p>
             </div>
             <div class="timeline-item">
                 <p class="timeline-year">2027 — 현재</p>
-                <h3 class="timeline-title">작전 발령</h3>
-                <p class="timeline-desc">수많은 작전들이 진행되는곳중 하나인 이곳은 경기도 가평군. 구원천사 세력의 확장이 감지되었고, NOVA기관 본사는 민간인 구출과 세력 제압을 위한 작전을 발령하였다.</p>
+                <h3 class="timeline-title">가평군, 생존자들</h3>
+                <p class="timeline-desc">경기도 가평군. 네 개의 세력이 각자의 이념과 목적 아래 충돌하고, 협력하고, 배신한다. 구원천사 세력의 확장이 감지되었고, NOVA는 민간인 구출과 세력 제압을 위한 작전을 발령했다.</p>
             </div>
         </div>
     </section>
@@ -405,38 +453,9 @@
         <div class="section-header">
             <p class="section-label">FACTIONS</p>
             <h2 class="section-title">세력</h2>
-            <p class="section-desc">생존을 위해, 혹은 그 이상의 무언가를 위해 모인 자들.</p>
+            <p class="section-desc">생존을 위해, 혹은 그 이상의 무언가를 위해 모인 자들. 항목을 클릭하면 상세 정보와 세부 구성이 펼쳐집니다.</p>
         </div>
-        <div class="faction-grid">
-            <div class="faction-card nova">
-                <div class="faction-icon">🛡️</div>
-                <h3 class="faction-name">NOVA</h3>
-                <p class="faction-subtitle">Non-Ordinary Verification Agency</p>
-                <p class="faction-desc">비정상존재를 연구·격리·관리·검증하는 국가기관. 사태 이후 공개되었으며, 현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다. TF-α(격리팀), 연구팀, 관리팀, 의료팀, 검증팀으로 구성되어있다.</p>
-                <div class="faction-location"><span>📍</span> 북서쪽 오토캠프장 (작전용 임시기지)</div>
-            </div>
-            <div class="faction-card cheonwoo">
-                <div class="faction-icon">✝️</div>
-                <h3 class="faction-name">천우회</h3>
-                <p class="faction-subtitle">天羽會</p>
-                <p class="faction-desc">'구원천사'가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다. 순교자, 인도자, 어린양으로 계급으로 구성되어있다.</p>
-                <div class="faction-location"><span>📍</span> 동쪽 자라섬</div>
-            </div>
-            <div class="faction-card revenant">
-                <div class="faction-icon">🐺</div>
-                <h3 class="faction-name">레버넌트</h3>
-                <p class="faction-subtitle">REVENANT</p>
-                <p class="faction-desc">구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. NOVA기관을 대부분 싫어하며, 들개조, 올빼미조, 다람쥐조로 구성되어있다.</p>
-                <div class="faction-location"><span>📍</span> 남쪽 호명산 숲속 캠핑장</div>
-            </div>
-            <div class="faction-card trickster">
-                <div class="faction-icon">🎭</div>
-                <h3 class="faction-name">트릭스터</h3>
-                <p class="faction-subtitle">TRICKSTER</p>
-                <p class="faction-desc">2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 실패가 잦다. 정보 수집 능력은 높으나, 해석력은 낮은편이다.</p>
-                <div class="faction-location"><span>📍</span> 북쪽 모텔 (주기적 이동 중)</div>
-            </div>
-        </div>
+        <div class="faction-list" id="factionList"></div>
     </section>
 
     <!-- CHARACTERS -->
@@ -446,6 +465,13 @@
             <h2 class="section-title">등장인물</h2>
             <p class="section-desc">각자의 사정과 신념을 안고 이 폐허에서 살아가는 자들. 카드를 클릭하면 상세 정보를 볼 수 있습니다.</p>
         </div>
+        <div class="char-tabs" id="charTabs">
+            <button class="char-tab active" data-fac="all">전체</button>
+            <button class="char-tab" data-fac="nova">NOVA</button>
+            <button class="char-tab" data-fac="cheonwoo">천우회</button>
+            <button class="char-tab" data-fac="revenant">레버넌트</button>
+            <button class="char-tab" data-fac="trickster">트릭스터</button>
+        </div>
         <div id="characterSections"></div>
     </section>
 
@@ -454,7 +480,15 @@
         <div class="section-header">
             <p class="section-label">NON-ORDINARY</p>
             <h2 class="section-title">비정상존재</h2>
-            <p class="section-desc">격리를 벗어난 것들. 그것들에겐 이름 대신 번호가 붙는다.<br>카드를 클릭하면 남겨진 기록을 볼 수 있습니다.</p>
+            <p class="section-desc">격리를 벗어난 것들. 그것들에겐 이름 대신 번호가 붙는다.<br>카드를 클릭하면 관측 기록을 볼 수 있습니다.</p>
+            <div class="danger-legend">
+                <div class="legend-chip v0"><span class="lv">V-0</span><span class="lbl">무해</span></div>
+                <div class="legend-chip v1"><span class="lv">V-1</span><span class="lbl">경미</span></div>
+                <div class="legend-chip v2"><span class="lv">V-2</span><span class="lbl">주의</span></div>
+                <div class="legend-chip v3"><span class="lv">V-3</span><span class="lbl">위험</span></div>
+                <div class="legend-chip v4"><span class="lv">V-4</span><span class="lbl">치명</span></div>
+                <div class="legend-chip v5"><span class="lv">V-5</span><span class="lbl">재앙급</span></div>
+            </div>
         </div>
         <div class="no-grid" id="noGrid"></div>
     </section>
@@ -469,16 +503,13 @@
     <!-- CHARACTER MODAL -->
     <div class="modal-overlay" id="charModalOverlay">
         <div class="modal-box" id="charModalBox">
-            <span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
             <button class="modal-close" id="charModalClose" aria-label="닫기">✕</button>
-
             <div class="modal-carousel">
                 <div class="carousel-track" id="charCarouselTrack"></div>
                 <button class="carousel-arrow left" id="charPrev" aria-label="이전 이미지">‹</button>
                 <button class="carousel-arrow right" id="charNext" aria-label="다음 이미지">›</button>
                 <div class="carousel-dots" id="charDots"></div>
             </div>
-
             <div class="modal-header">
                 <span class="dossier-stamp">NOVA FILE</span>
                 <p class="dossier-id" id="charModalId"></p>
@@ -487,18 +518,11 @@
                 <p class="modal-sub" id="charModalSub"></p>
             </div>
             <div class="modal-body">
-                <div class="modal-section">
-                    <p class="modal-section-label">배경</p>
-                    <p class="modal-section-text" id="charModalBackground"></p>
-                </div>
-                <div class="modal-section">
-                    <p class="modal-section-label">성격 · 특징</p>
-                    <p class="modal-section-text" id="charModalPersonality"></p>
-                </div>
-                <div class="modal-section">
-                    <p class="modal-section-label">태그</p>
-                    <div class="modal-tags" id="charModalTags"></div>
-                </div>
+                <div class="modal-section"><p class="modal-section-label">외형</p><p class="modal-section-text" id="charModalAppearance"></p></div>
+                <div class="modal-section"><p class="modal-section-label">성격</p><p class="modal-section-text" id="charModalPersonality"></p></div>
+                <div class="modal-section"><p class="modal-section-label">기타사항</p><p class="modal-section-text" id="charModalBackground"></p></div>
+                <div class="modal-section"><p class="modal-section-label">한마디</p><div class="quote-box" id="charModalQuote"></div></div>
+                <div class="modal-section"><p class="modal-section-label">태그</p><div class="modal-tags" id="charModalTags"></div></div>
             </div>
         </div>
     </div>
@@ -506,9 +530,7 @@
     <!-- NO MODAL -->
     <div class="modal-overlay" id="noModalOverlay">
         <div class="modal-box" id="noModalBox">
-            <span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
             <button class="modal-close" id="noModalClose" aria-label="닫기">✕</button>
-
             <div class="no-modal-img-wrap">
                 <img id="noModalImg" src="외부이미지칸" alt="">
                 <div class="tape-wrap" id="noTapeWrap">
@@ -516,7 +538,6 @@
                     <div class="tape-strip tape-2">⚠ NOVA RESTRICTED ⚠</div>
                 </div>
             </div>
-
             <div class="modal-header">
                 <span class="dossier-stamp">RESTRICTED</span>
                 <p class="dossier-id" id="noModalId"></p>
@@ -525,13 +546,11 @@
                 <p class="modal-sub" id="noModalSerial"></p>
             </div>
             <div class="modal-body">
+                <div class="modal-section"><p class="modal-section-label">외형</p><p class="modal-section-text" id="noModalAppearance"></p></div>
+                <div class="modal-section"><p class="modal-section-label">공격 방식</p><p class="modal-section-text" id="noModalAttack"></p></div>
                 <div class="modal-section">
-                    <p class="modal-section-label">외형</p>
-                    <p class="modal-section-text" id="noModalAppearance"></p>
-                </div>
-                <div class="modal-section">
-                    <p class="modal-section-label">남겨진 기록</p>
-                    <div class="no-record-box" id="noModalRecord"></div>
+                    <button class="reveal-btn" id="noRevealBtn">🔒 기록된 대응법 확인하기</button>
+                    <div class="no-counter-box hidden" id="noModalCounter"></div>
                 </div>
             </div>
         </div>
@@ -543,108 +562,194 @@
         const factionLabels = { nova: 'NOVA 기관', cheonwoo: '천우회', revenant: '레버넌트', trickster: '트릭스터' };
         const factionColorVar = { nova: 'var(--nova-color)', cheonwoo: 'var(--cheonwoo-color)', revenant: 'var(--revenant-color)', trickster: 'var(--trickster-color)' };
 
-        // 캐릭터별 상세 이미지는 images 배열(3장)에 들어있습니다.
-        // "외부이미지칸" 문자를 실제 이미지 경로로 바꿔서 사용하세요. 더 넣고 싶으면 배열에 항목을 추가하면 됩니다.
+        const factions = [
+            { id:'nova', name:'NOVA', subtitle:'Non-Ordinary Verification Agency', location:'北西 오토캠프장 (작전용 임시기지)',
+              desc:'비정상존재를 연구·격리·관리하는 국가기관. 사태 이후 공개되었으며, 현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다.' },
+            { id:'cheonwoo', name:'천우회', subtitle:'天羽會', location:'東 자라섬',
+              desc:"V-4 등급 NO '구원천사'가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다." },
+            { id:'revenant', name:'레버넌트', subtitle:'REVENANT', location:'南 호명산 숲속 캠핑장',
+              desc:'구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. 反NOVA 성향이 강하다.' },
+            { id:'trickster', name:'트릭스터', subtitle:'TRICKSTER', location:'北 모텔 (주기적 이동 중)',
+              desc:'2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 맥락 누락으로 실패가 잦다.' },
+        ];
+
+        const factionTeams = {
+            nova: [
+                { name:'TF-α (격리팀)', desc:'비정상존재 현장 대응과 격리를 담당하는 전투 부대.' },
+                { name:'연구팀', desc:'NO의 특성을 분석하고 대응 데이터를 축적하는 부서.' },
+                { name:'관리팀', desc:'기지 운영과 물자, 인력을 관리하는 부서.' },
+                { name:'의료팀', desc:'부상자 치료와 생존자 건강을 담당하는 부서.' },
+                { name:'검증팀', desc:'요원의 능력과 이상 유무를 판별, 검증하는 부서.' },
+            ],
+            cheonwoo: [
+                { name:'순교자', desc:'구원천사를 위해 스스로를 희생하는 최상위 신봉자.' },
+                { name:'인도자', desc:'신도를 관리하고 포섭을 주도하는 중간 간부.' },
+                { name:'어린양', desc:'갓 들어왔거나 강제로 수용된 하위 신도.' },
+            ],
+            revenant: [
+                { name:'들개조', desc:'전투와 정찰을 전담하는 무력 부대.' },
+                { name:'올빼미조', desc:'정보 수집과 야간 감시를 담당하는 부대.' },
+                { name:'다람쥐조', desc:'물자 확보와 생존자 케어를 담당하는 부대.' },
+            ],
+            trickster: [
+                { name:'관측·분석 담당', desc:'정보를 수집하고 상황을 해석하는 역할.' },
+                { name:'행동 담당', desc:'실제로 움직여 문제를 해결하는 실행 역할.' },
+            ],
+        };
+
+        // 캐릭터의 외형(appearance)과 한마디(quote)는 비워두었습니다. 직접 채워주세요.
         const characters = [
             { id:'kty', faction:'nova', name:'강태윤', gender:'♂', age:32, role:'TF-α 리더', mbti:'ISTJ', tags:['NO.188 (AR)','과묵'],
-              background:'전직 특전사 대위. 무언가 트라우마를 안고 있는거같다.',
-              personality:'원칙주의자이며 냉철한 판단으로 팀을 이끈다.',
+              appearance:'', personality:'원칙주의자이며 냉철한 판단으로 팀을 이끈다.',
+              background:'전직 특전사 대위. 탈출 사태 초기 부하를 잃은 트라우마를 안고 있다.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'sjh', faction:'nova', name:'서주희', gender:'♀', age:28, role:'TF-α 부대원', mbti:'INTP', tags:['NO.178 (쌍권총)','무기력'],
-              background:'검증팀 출신이며 특이사항으로 격리팀에 강제 파견되었다.',
-              personality:'만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.',
+              appearance:'', personality:'만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.',
+              background:'검증팀 출신으로 생존 능력이 규격 외라 격리팀에 강제 파견된 요원.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'ksw', faction:'nova', name:'김승우', gender:'♂', age:29, role:'TF-α 부대원', mbti:'ENFJ', tags:['NO.192 (SMG)','헌신적'],
-              background:'전직 소방관 출신 생존자. 아파트에서 구조되어 합류되었다.',
-              personality:'정이 많고 활발한 성격으로 팀 내 분위기를 밝히지만, 외로움을 잘 타는 면이 있다.',
+              appearance:'', personality:'정이 많고 활발한 성격으로 팀 내 분위기를 밝히지만, 외로움을 잘 타는 면이 있다.',
+              background:'전직 소방관 출신 생존자. 아파트에서 구조되어 합류.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'djh', faction:'nova', name:'도재현', gender:'♂', age:29, role:'연구팀 연구원', mbti:'ENTP', tags:['연구팀','호기심'],
-              background:'매드 사이언티스트의 연구원.',
-              personality:'NO를 장난감 취급하며, 연구 데이터를 위해서라면 수단과 방법을 가리지 않는다. 유쾌하지만 사이코패스.',
+              appearance:'', personality:'NO를 장난감 취급하며, 연구 데이터를 위해서라면 수단과 방법을 가리지 않는다. 유쾌하지만 사이코패스.',
+              background:'매드 사이언티스트 기질의 연구원.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'ych', faction:'nova', name:'유채희', gender:'♀', age:27, role:'관리팀 관리원', mbti:'ENFP', tags:['관리팀','매력적'],
-              background:'전직 필라테스 강사. 아파트에서 구조되어 합류되었다.',
-              personality:'미혹적인 매력과 여유로운 성격의 소유자. 경상도 사투리를 쓰며, 남의 것을 탐내는 버릇이 있다.',
+              appearance:'', personality:'미혹적인 매력과 여유로운 성격의 소유자. 경상도 사투리를 쓰며, 남의 것을 탐내는 버릇이 있다.',
+              background:'전직 필라테스 강사.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'eds', faction:'nova', name:'은다솜', gender:'♀', age:22, role:'의료팀원', mbti:'INFP', tags:['의료팀','상냥'],
-              background:'의대생 출신으로 실전 경력이 많은 의료원. 아파트에서 구조되어 합류되었다.',
-              personality:'헌신적이고 친절하지만 덜렁거리는 면이 있다.',
+              appearance:'', personality:'헌신적이고 친절하지만 덜렁거리는 면이 있다.',
+              background:'의대생 출신으로 실전 경력이 많은 의료 요원.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'guardian', faction:'cheonwoo', name:'구원천사', gender:'♀', age:'불명', role:'교주', mbti:'ENFJ', tags:['V-4','NO-1004','세뇌'],
-              background:'NO-1004. V-2 이하 NO도 조종 가능한 재앙에 가까운 존재.',
-              personality:'구원을 빙자해 유혹하며, 노래를 통해 자살을 유도하거나 심정지를 일으킨다.',
+              appearance:'', personality:'구원을 빙자해 유혹하며, 노래를 통해 자살을 유도하거나 심정지를 일으킨다.',
+              background:'NO-1004. V-2 이하 NO도 조종 가능한 재앙에 가까운 존재.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'mjc', faction:'cheonwoo', name:'마진철', gender:'♂', age:28, role:'인도자', mbti:'ESTP', tags:['NO.127 (배트)','광기'],
-              background:'구원천사의 초자연적 힘과 권력에 매료되어 세뇌를 받아들였다.',
-              personality:'호전적이고 폭력적인 무력 대장. 인간을 먹일수록 강화되는 무기를 사용.',
+              appearance:'', personality:'호전적이고 폭력적인 무력 대장. 인간을 먹일수록 강화되는 무기를 사용.',
+              background:'구원천사의 초자연적 힘과 권력에 매료되어 세뇌를 받아들였다.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'beh', faction:'cheonwoo', name:'백은하', gender:'♀', age:29, role:'인도자', mbti:'INFJ', tags:['가식','가스라이팅'],
-              background:'전직 심리상담사.',
-              personality:'온화한 겉모습 아래 잔혹함을 숨기고 있으며, 가스라이팅으로 민간인을 구원천사에게 인도하는 역할을 맡고 있다.',
+              appearance:'', personality:'온화한 겉모습 아래 잔혹함을 숨기고 있으며, 가스라이팅으로 민간인을 구원천사에게 인도하는 역할을 맡고 있다.',
+              background:'전직 심리상담사.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'hsi', faction:'cheonwoo', name:'한소이', gender:'♀', age:20, role:'어린양', mbti:'ISFP', tags:['순종','강제수용'],
-              background:'가족을 잃고 천우회에 강제 수용된 소녀.',
-              personality:'구원천사를 믿는 척하며 가혹한 노동을 감내하고 있다. 소심하지만 눈치가 빠르다.',
+              appearance:'', personality:'구원천사를 믿는 척하며 가혹한 노동을 감내하고 있다. 소심하지만 눈치가 빠르다.',
+              background:'가족을 잃고 천우회에 강제 수용된 소녀.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'sjh2', faction:'revenant', name:'신지하', gender:'♀', age:38, role:'레버넌트 대표', mbti:'ENTJ', tags:['저격총','카리스마'],
-              background:"전직 육군 소령. '민간인보다 정부인 보호'라는 명령에 반발해 부대를 이탈, 민간인 위주 구출에 나섰다.",
-              personality:'카리스마 있고 내 식구를 과보호한다.',
+              appearance:'', personality:'카리스마 있고 내 식구를 과보호한다.',
+              background:"전직 육군 소령. '민간인보다 정부인 보호'라는 명령에 반발해 부대를 이탈, 민간인 위주 구출에 나섰다.", quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'ckw', faction:'revenant', name:'차권우', gender:'♂', age:30, role:'들개조 리더', mbti:'ISTP', tags:['돌격소총','생존주의'],
-              background:'전직 기계정비공.',
-              personality:'냉소적이고 생존주의적이지만, 속은 따뜻한 츤데레. 위험을 즐기며 야생 감각이 탁월하다.',
+              appearance:'', personality:'냉소적이고 생존주의적이지만, 속은 따뜻한 츤데레. 위험을 즐기며 야생 감각이 탁월하다.',
+              background:'전직 기계정비공.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'iyr', faction:'revenant', name:'임여름', gender:'♀', age:24, role:'들개조원', mbti:'ESFP', tags:['돌격소총','전투광'],
-              background:'들개조의 실질적 무력이자 분위기 메이커.',
-              personality:'겁 없고 쾌활한 전투광. 강한 멘탈로 어떤 상황에서도 꺾이지 않는다.',
+              appearance:'', personality:'겁 없고 쾌활한 전투광. 강한 멘탈로 어떤 상황에서도 꺾이지 않는다.',
+              background:'들개조의 실질적 무력이자 분위기 메이커.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'sja', faction:'revenant', name:'송지안', gender:'♀', age:25, role:'올빼미조원', mbti:'INTJ', tags:['기관단총','NO 혐오'],
-              background:'진중하고 이성적인 연구가.',
-              personality:'NO를 혐오하며 격멸을 선호한다. NOVA의 재격리 방침을 이해하지 못한다.',
+              appearance:'', personality:'NO를 혐오하며 격멸을 선호한다. NOVA의 재격리 방침을 이해하지 못한다.',
+              background:'진중하고 이성적인 연구가.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'kjy', faction:'revenant', name:'권진영', gender:'♂', age:34, role:'다람쥐조원', mbti:'INFJ', tags:['권총','경청'],
-              background:'전직 정신과 의사.',
-              personality:'생존자들의 정신 케어를 전담하며, 매일 자신의 정신도 갈리고 있다. 몰래 흡연하며 버티는 중.',
+              appearance:'', personality:'생존자들의 정신 케어를 전담하며, 매일 자신의 정신도 갈리고 있다. 몰래 흡연하며 버티는 중.',
+              background:'전직 정신과 의사.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'bell', faction:'trickster', name:'벨', gender:'♀', age:21, role:'관측·분석 담당', mbti:'INTP', tags:['비무장','관측자'],
-              background:'자칭 천재. 관측 노트를 소지하며 타 세력의 행동을 기록·분석한다.',
-              personality:'까칠하고 장난기가 많지만, 의외로 똑똑하다. 다만 게으르다.',
+              appearance:'', personality:'까칠하고 장난기가 많지만, 의외로 똑똑하다. 다만 게으르다.',
+              background:'자칭 천재. 관측 노트를 소지하며 타 세력의 행동을 기록·분석한다.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'rao', faction:'trickster', name:'라오', gender:'♂', age:27, role:'행동 담당', mbti:'ISFP', tags:['카타나','무력 만렙'],
-              background:'벨의 지시를 잘 따르는 실행자.',
-              personality:'속을 알 수 없는 미소를 짓는 무력 만렙. 생존력이 좋으며, 귀찮아하면서도 할 건 하는 성격.',
+              appearance:'', personality:'속을 알 수 없는 미소를 짓는 무력 만렙. 생존력이 좋으며, 귀찮아하면서도 할 건 하는 성격.',
+              background:'벨의 지시를 잘 따르는 실행자.', quote:'',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
         ];
 
-        // NO 개체별 대표 이미지는 image 필드에 있습니다. "외부이미지칸"을 실제 경로로 바꿔주세요.
+        // NO 개체 대표 이미지는 image 필드에 있습니다. counter는 클릭 전까지 화면에 노출되지 않습니다.
         const noEntities = [
             { id:'no266', serial:'NO.266', name:'머리없는 마네킹', danger:'v3', dangerLabel:'V-3 ｜ 위험', image:'외부이미지칸',
               appearance:'머리가 없는 나체 마네킹 형태.',
-              record:'옷을 입혀준 대원들은 무사히 돌아왔다는 목격담이 있다. 반대로, 눈을 뗀 순간 사라졌다가 등 뒤에 서 있었다는 증언도 있다.' },
+              attackMethod:'비관측 시 이동하며, 시선이 닿으면 정지한다. 옷을 입히면 일시적으로 온순해진다.',
+              counter:'최소 1명 이상 관측을 유지할 것. 옷을 입히면 일시적으로 무력화할 수 있다.' },
             { id:'no98', serial:'NO.98', name:'안식의 곰인형', danger:'v4', dangerLabel:'V-4 ｜ 치명', image:'외부이미지칸',
               appearance:'작은 갈색 곰인형. 목에 붉은 리본.',
-              record:'혼자 다가간 대원은 돌아오지 않았다. 등을 보이지 말라는 말이 대원들 사이에 전해진다.' },
+              attackMethod:'평소 곰인형 상태를 유지하나, 방심하고 접근 시 등에서 촉수가 출현. 촉수 발현 시 입이 크게 찢어져 벌어진다.',
+              counter:'절대 단독 접근 금지. 최소 2명 이상 동반 필수.' },
             { id:'no332', serial:'NO.332', name:'안개늑대', danger:'v2', dangerLabel:'V-2 ｜ 주의', image:'외부이미지칸',
               appearance:'늑대 형태의 안개.',
-              record:'숨을 오래 참고 버틴 대원은 무사했다는 기록이 있다. 따뜻한 물건을 던지면 그쪽으로 몰려간다는 이야기도 있다.' },
+              attackMethod:'주변 안개 농도를 높이며, 물리 공격이 불가능하다. 시각·청각이 없으나 호흡과 높은 체온을 감지한다.',
+              counter:'숨을 참고 체온을 낮게 유지할 것. 따뜻한 물건을 던져 교란할 수 있다.' },
             { id:'no2520', serial:'NO.2520', name:'카메라맨', danger:'v1', dangerLabel:'V-1 ｜ 경미', image:'외부이미지칸',
               appearance:'정장을 입은 남성의 몸에 카메라 머리.',
-              record:'얼굴을 가린 채 찍힌 사진에는 아무것도 나오지 않았다는 보고가 있다.' },
+              attackMethod:'촬영 시 대상의 미래 한 순간을 사진으로 출력한다. 플래시 섬광 효과가 있으며, 기분에 따라 촬영을 거부할 수 있다.',
+              counter:'얼굴을 가린 채 촬영되면 일반 사진만 출력된다.' },
             { id:'no804', serial:'NO.804', name:'얼굴가린 여인', danger:'v4', dangerLabel:'V-4 ｜ 치명', image:'외부이미지칸',
               appearance:'흑발, 흰 눈, 긴 손톱, 앙상한 몸, 화상 자국, 잘린 혀.',
-              record:'눈을 마주친 이는 하나같이 사라졌다. 지나칠 땐 고개를 숙이라는 말이 전해진다.' },
+              attackMethod:'쳐다볼 시 맹추격한다. 평상시에는 울고 있으며, 쳐다보지 않으면 온순한 상태를 유지한다.',
+              counter:'절대 쳐다보지 말 것. 시선 회피만이 유일한 생존법이다.' },
             { id:'no450', serial:'NO.450', name:'라미아', danger:'v5', dangerLabel:'V-5 ｜ 재앙급', image:'외부이미지칸',
               appearance:'녹색 머리, 적안, 상반신은 여성, 하반신은 백색 뱀.',
-              record:'이동할 때는 땅을 잘 확인하라고도 한다. 몇몇 대원들이 땅속으로 들어갔다는 목격이 몇 번 있다.' },
+              attackMethod:'주변 지면을 늪지화하며, 부식성 독을 주입해 먹잇감을 서서히 액화시킨다. 소화가 고속으로 진행되어 증거가 거의 남지 않는다.',
+              counter:'이동 시 지면을 사전에 확인할 것. 독 접촉 시 즉시 중성화 처리.' },
             { id:'no10', serial:'NO.10', name:'데시벨 헌터', danger:'v5', dangerLabel:'V-5 ｜ 재앙급', image:'외부이미지칸',
               appearance:'눈과 코가 없고, 검은 피부에 날카롭고 긴 앞발.',
-              record:'소리를 낸 자는 예외 없이 표적이 되었다. 불빛 앞에서는 주춤한다는 보고가 있다.' },
+              attackMethod:'시력이 없으나 청각이 극도로 예민하다. 극도로 공격적이며, 소리를 내는 모든 것을 사냥한다.',
+              counter:'절대 침묵을 유지할 것. 고주파 발생기로 교란, 불로 일시 무력화 가능.' },
             { id:'no494', serial:'NO.494', name:'냥타로', danger:'v3', dangerLabel:'V-3 ｜ 위험', image:'외부이미지칸',
               appearance:'회색과 주홍 무늬의 고양이 인형탈. 붉은 눈, 곳곳에 꿰맨 자국.',
-              record:'도움을 받을수록 대가가 늘어난다고 한다. 그 인형을 오래 안았던 이들은, 어느 순간 누구도 기억하지 못한다.' },
+              attackMethod:'초기에 친절한 도움을 제공(길 안내, 물건 수리 등)하나, 도움 수령량이 증가할수록 사랑을 요구한다. 요구 미충족 시 대상을 안아 흡수하며, 흡수된 대상은 모든 타인의 기억에서 삭제된다.',
+              counter:'과도한 친밀감 표현을 자제할 것. 도움은 되도록 거부할 것.' },
         ];
 
-        // ===================== 카드 렌더링 =====================
+        // ===================== 세력 렌더링 =====================
+        const factionListEl = document.getElementById('factionList');
+        factionListEl.innerHTML = factions.map(f => `
+            <div class="faction-item" id="fitem-${f.id}">
+                <button class="faction-row" data-fac="${f.id}">
+                    <span class="faction-row-mark" style="color:${factionColorVar[f.id]}">|</span>
+                    <span class="faction-row-name">[${f.name}]</span>
+                    <span class="faction-row-loc">${f.location}</span>
+                    <span class="faction-row-sub">구성목록: ${factionTeams[f.id].map(t => t.name).join(' · ')}</span>
+                    <span class="faction-row-arrow">▾</span>
+                </button>
+                <div class="faction-detail">
+                    <div class="faction-detail-inner">
+                        <p class="faction-detail-desc">${f.desc}</p>
+                        <div class="faction-team-chips">
+                            ${factionTeams[f.id].map((t, i) => `<button class="team-chip" data-fac="${f.id}" data-ti="${i}">${t.name}</button>`).join('')}
+                        </div>
+                        <p class="faction-team-desc" id="fteam-desc-${f.id}">구성 항목을 클릭하면 설명이 나타납니다.</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.faction-row').forEach(row => {
+            row.addEventListener('click', () => {
+                const item = row.closest('.faction-item');
+                const wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.faction-item').forEach(i => i.classList.remove('open'));
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+        document.querySelectorAll('.team-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const fac = chip.dataset.fac, ti = parseInt(chip.dataset.ti, 10);
+                const team = factionTeams[fac][ti];
+                const descEl = document.getElementById(`fteam-desc-${fac}`);
+                const already = chip.classList.contains('active');
+                chip.parentElement.querySelectorAll('.team-chip').forEach(c => c.classList.remove('active'));
+                if (already) { descEl.textContent = '구성 항목을 클릭하면 설명이 나타납니다.'; }
+                else { chip.classList.add('active'); descEl.textContent = `${team.name} — ${team.desc}`; }
+            });
+        });
+
+        // ===================== 캐릭터 렌더링 + 탭 필터 =====================
         const charSectionsEl = document.getElementById('characterSections');
         const factionOrder = ['nova', 'cheonwoo', 'revenant', 'trickster'];
 
@@ -652,6 +757,8 @@
             const list = characters.filter(c => c.faction === fac);
             if (!list.length) return;
             const wrap = document.createElement('div');
+            wrap.className = 'char-faction-group';
+            wrap.dataset.factionGroup = fac;
             wrap.innerHTML = `
                 <h3 class="char-faction-title"><span class="dot ${fac}"></span>${factionLabels[fac]}</h3>
                 <div class="char-grid">
@@ -663,20 +770,25 @@
                                 <div class="char-img-overlay"><span>상세보기 ▸</span></div>
                             </div>
                             <div class="char-info">
-                                <div>
-                                    <h4 class="char-name">${c.name}</h4>
-                                    <p class="char-role-line">${c.role}</p>
-                                </div>
-                                <div class="char-info-stats">
-                                    <span class="stat">${c.gender}</span>
-                                    <span class="stat">${c.age}세</span>
-                                </div>
+                                <h4 class="char-name">${c.name}</h4>
+                                <p class="char-role-line">${factionLabels[fac]} ｜ ${c.role}</p>
                             </div>
                         </button>
                     `).join('')}
                 </div>
             `;
             charSectionsEl.appendChild(wrap);
+        });
+
+        document.querySelectorAll('.char-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.char-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const fac = tab.dataset.fac;
+                document.querySelectorAll('.char-faction-group').forEach(group => {
+                    group.style.display = (fac === 'all' || group.dataset.factionGroup === fac) ? '' : 'none';
+                });
+            });
         });
 
         const noGridEl = document.getElementById('noGrid');
@@ -695,12 +807,11 @@
             </button>
         `).join('');
 
-        // ===================== 캐릭터 모달 (캐러셀 포함) =====================
+        // ===================== 캐릭터 모달 =====================
         const charOverlay = document.getElementById('charModalOverlay');
         const charTrack = document.getElementById('charCarouselTrack');
         const charDots = document.getElementById('charDots');
-        let charSlideIndex = 0;
-        let charSlideCount = 0;
+        let charSlideIndex = 0, charSlideCount = 0;
 
         function renderCharCarousel(images) {
             charTrack.innerHTML = images.map((img, i) => `
@@ -710,8 +821,7 @@
                 </div>
             `).join('');
             charDots.innerHTML = images.map((_, i) => `<button class="carousel-dot${i===0?' active':''}" data-i="${i}" aria-label="이미지 ${i+1}로 이동"></button>`).join('');
-            charSlideIndex = 0;
-            charSlideCount = images.length;
+            charSlideIndex = 0; charSlideCount = images.length;
             updateCharCarousel();
             charDots.querySelectorAll('.carousel-dot').forEach(dot => {
                 dot.addEventListener('click', () => { charSlideIndex = parseInt(dot.dataset.i, 10); updateCharCarousel(); });
@@ -724,6 +834,12 @@
         document.getElementById('charPrev').addEventListener('click', () => { charSlideIndex = (charSlideIndex - 1 + charSlideCount) % charSlideCount; updateCharCarousel(); });
         document.getElementById('charNext').addEventListener('click', () => { charSlideIndex = (charSlideIndex + 1) % charSlideCount; updateCharCarousel(); });
 
+        function setTextOrPlaceholder(elId, value, placeholder) {
+            const el = document.getElementById(elId);
+            if (value && value.trim()) { el.textContent = value; el.classList.remove('placeholder'); }
+            else { el.textContent = placeholder; el.classList.add('placeholder'); }
+        }
+
         document.querySelectorAll('.char-card').forEach(card => {
             card.addEventListener('click', () => {
                 const c = characters.find(x => x.id === card.dataset.id);
@@ -732,8 +848,12 @@
                 document.getElementById('charModalBadges').innerHTML = `<span class="modal-tag">${factionLabels[c.faction]}</span><span class="modal-tag">${c.mbti}</span>`;
                 document.getElementById('charModalName').textContent = c.name;
                 document.getElementById('charModalSub').textContent = `${c.gender} ｜ ${c.age}세 ｜ ${c.role}`;
-                document.getElementById('charModalBackground').textContent = c.background;
-                document.getElementById('charModalPersonality').textContent = c.personality;
+                setTextOrPlaceholder('charModalAppearance', c.appearance, '외형 묘사를 입력해주세요.');
+                setTextOrPlaceholder('charModalPersonality', c.personality, '성격을 입력해주세요.');
+                setTextOrPlaceholder('charModalBackground', c.background, '기타사항을 입력해주세요.');
+                const quoteEl = document.getElementById('charModalQuote');
+                if (c.quote && c.quote.trim()) { quoteEl.textContent = `"${c.quote}"`; quoteEl.classList.remove('empty'); }
+                else { quoteEl.textContent = '이곳에 캐릭터의 한마디를 적어주세요.'; quoteEl.classList.add('empty'); }
                 document.getElementById('charModalTags').innerHTML = c.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
                 renderCharCarousel(c.images);
                 charOverlay.classList.add('open');
@@ -743,9 +863,17 @@
         document.getElementById('charModalClose').addEventListener('click', () => charOverlay.classList.remove('open'));
         charOverlay.addEventListener('click', e => { if (e.target === charOverlay) charOverlay.classList.remove('open'); });
 
-        // ===================== NO 모달 (봉쇄테이프 연출) =====================
+        // ===================== NO 모달 =====================
         const noOverlay = document.getElementById('noModalOverlay');
         const noTapeWrap = document.getElementById('noTapeWrap');
+        const noRevealBtn = document.getElementById('noRevealBtn');
+        const noModalCounter = document.getElementById('noModalCounter');
+
+        noRevealBtn.addEventListener('click', () => {
+            const hidden = noModalCounter.classList.contains('hidden');
+            if (hidden) { noModalCounter.classList.remove('hidden'); noRevealBtn.textContent = '🔓 대응법 숨기기'; }
+            else { noModalCounter.classList.add('hidden'); noRevealBtn.textContent = '🔒 기록된 대응법 확인하기'; }
+        });
 
         document.querySelectorAll('.no-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -757,11 +885,13 @@
                 document.getElementById('noModalName').textContent = n.name;
                 document.getElementById('noModalSerial').textContent = n.serial;
                 document.getElementById('noModalAppearance').textContent = n.appearance;
-                document.getElementById('noModalRecord').textContent = n.record;
+                document.getElementById('noModalAttack').textContent = n.attackMethod;
+                noModalCounter.textContent = n.counter;
+                noModalCounter.classList.add('hidden');
+                noRevealBtn.textContent = '🔒 기록된 대응법 확인하기';
 
-                // 테이프 리셋 후 다시 재생
                 noTapeWrap.classList.remove('reveal');
-                void noTapeWrap.offsetWidth; // 강제 리플로우로 애니메이션 재시작
+                void noTapeWrap.offsetWidth;
                 noOverlay.classList.add('open');
                 document.getElementById('noModalBox').scrollTop = 0;
                 setTimeout(() => noTapeWrap.classList.add('reveal'), 550);
@@ -782,41 +912,66 @@
             }
         });
 
-        // ===================== 배경음악 =====================
+        // ===================== 배경음악 (재생/정지 명확히 분리) =====================
         const bgm = document.getElementById('bgm');
         const musicBtn = document.getElementById('musicBtn');
+        const musicVolBtn = document.getElementById('musicVolBtn');
         const musicPanel = document.getElementById('musicPanel');
         const volumeSlider = document.getElementById('volumeSlider');
         bgm.volume = 0.2;
+        let musicPlaying = false;
 
-        window.addEventListener('load', () => {
-    bgm.muted = false;
-    bgm.play().then(() => {
-        musicBtn.textContent = '🔊';
-        musicBtn.classList.add('playing');
-    }).catch(() => {
-        // 브라우저가 소리 자동재생을 막은 경우 - 일단 무음으로 재생해두고, 클릭하면 소리 켜짐
-        bgm.muted = true;
-        bgm.play().catch(() => {});
-    });
-});
+        function playMusic() {
+            bgm.play().then(() => {
+                musicPlaying = true;
+                musicBtn.textContent = '🔊';
+                musicBtn.classList.add('playing');
+            }).catch(() => { musicPlaying = false; });
+        }
+        function pauseMusic() {
+            bgm.pause();
+            musicPlaying = false;
+            musicBtn.textContent = '🔇';
+            musicBtn.classList.remove('playing');
+        }
+        function toggleMusic() { musicPlaying ? pauseMusic() : playMusic(); }
 
-        musicBtn.addEventListener('click', () => musicPanel.classList.toggle('open'));
-        document.addEventListener('click', e => { if (!e.target.closest('.music-control')) musicPanel.classList.remove('open'); });
+        musicBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMusic(); });
+        musicVolBtn.addEventListener('click', (e) => { e.stopPropagation(); musicPanel.classList.toggle('open'); musicVolBtn.classList.toggle('open'); });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.music-control')) { musicPanel.classList.remove('open'); musicVolBtn.classList.remove('open'); }
+        });
         musicPanel.addEventListener('click', e => e.stopPropagation());
+        volumeSlider.addEventListener('input', () => { bgm.volume = volumeSlider.value / 100; });
 
-        function toggleMusic() {
-            if (bgm.muted || bgm.paused) {
-                bgm.muted = false; bgm.play().catch(() => {});
-                musicBtn.textContent = '🔊'; musicBtn.classList.add('playing');
+        // ===================== 인트로 시퀀스 =====================
+        const introOverlay = document.getElementById('introOverlay');
+        const introTypeText = document.getElementById('introTypeText');
+        const introTextWrap = document.getElementById('introTextWrap');
+        const introBtn = document.getElementById('introBtn');
+        const introMessage = '이것은, 수많은 일지기록들 중 하나인\n구원일지의 기록이다.';
+        let typeIdx = 0;
+
+        function typeIntro() {
+            if (typeIdx <= introMessage.length) {
+                introTypeText.innerHTML = introMessage.slice(0, typeIdx).replace(/\n/g, '<br>');
+                typeIdx++;
+                setTimeout(typeIntro, 55);
             } else {
-                bgm.muted = true;
-                musicBtn.textContent = '🔇'; musicBtn.classList.remove('playing');
+                introBtn.classList.add('show');
             }
         }
-        document.getElementById('playToggleBtn').addEventListener('click', toggleMusic);
+        setTimeout(() => {
+            introTextWrap.classList.add('show');
+            setTimeout(typeIntro, 300);
+        }, 1300);
 
-        volumeSlider.addEventListener('input', () => { bgm.volume = volumeSlider.value / 100; });
+        introBtn.addEventListener('click', () => {
+            playMusic();
+            introOverlay.classList.add('closing');
+            document.body.classList.remove('intro-active');
+            setTimeout(() => { introOverlay.style.display = 'none'; }, 750);
+        });
 
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
@@ -830,7 +985,7 @@
                 if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.char-card, .no-card, .faction-card, .timeline-item').forEach(el => {
+        document.querySelectorAll('.char-card, .no-card, .timeline-item, .faction-item').forEach(el => {
             el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
