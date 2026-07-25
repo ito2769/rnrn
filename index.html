@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구출일지：구원자들</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Black+Han+Sans&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --accent-red: #8b0000;
+            --accent-red-glow: #ff2020;
+            --accent-blue: #1a3a5c;
+            --accent-gold: #c9a227;
+            --accent-purple: #4a1a6b;
+            --accent-green: #1a4a2a;
+            --border-color: #2a2a2a;
+            --nova-color: #2196F3;
+            --cheonwoo-color: #FFD700;
+            --revenant-color: #4CAF50;
+            --trickster-color: #9C27B0;
+            --danger-v0: #8BC34A;
+            --danger-v1: #CDDC39;
+            --danger-v2: #FFC107;
+            --danger-v3: #FF9800;
+            --danger-v4: #F44336;
+            --danger-v5: #9C27B0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-red);
+            border-radius: 3px;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 외부이미지칸 - 히어로 배경 (폐허/아포칼립스 도시 배경) */
+            background: url('외부이미지칸') center/cover no-repeat;
+            filter: brightness(0.2) saturate(0.3);
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(transparent, var(--bg-primary));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent-red);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero-title {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 4.5rem;
+            color: #fff;
+            text-shadow: 0 0 40px rgba(139, 0, 0, 0.5);
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .hero-year {
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            letter-spacing: 20px;
+            z-index: 1;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(var(--accent-red), transparent);
+            margin: 0 auto;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== NAVIGATION ========== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(var(--bg-primary), transparent);
+            transition: background 0.3s;
+        }
+
+        .nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-logo {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 1.3rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--accent-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-red-glow);
+        }
+
+        /* ========== SECTION COMMON ========== */
+        section {
+            padding: 120px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            color: var(--accent-red);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 2.8rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 700px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ========== WORLD SECTION ========== */
+        .world-timeline {
+            position: relative;
+            padding-left: 40px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -47px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-red);
+        }
+
+        .timeline-year {
+            font-size: 0.8rem;
+            color: var(--accent-red);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* ========== FACTION SECTION ========== */
+        .faction-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .faction-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .faction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .faction-card.nova::before { background: var(--nova-color); }
+        .faction-card.cheonwoo::before { background: var(--cheonwoo-color); }
+        .faction-card.revenant::before { background: var(--revenant-color); }
+        .faction-card.trickster::before { background: var(--trickster-color); }
+
+        .faction-card.nova:hover { border-color: var(--nova-color); }
+        .faction-card.cheonwoo:hover { border-color: var(--cheonwoo-color); }
+        .faction-card.revenant:hover { border-color: var(--revenant-color); }
+        .faction-card.trickster:hover { border-color: var(--trickster-color); }
+
+        .faction-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .faction-card.nova .faction-icon { background: rgba(33, 150, 243, 0.15); }
+        .faction-card.cheonwoo .faction-icon { background: rgba(255, 215, 0, 0.15); }
+        .faction-card.revenant .faction-icon { background: rgba(76, 175, 80, 0.15); }
+        .faction-card.trickster .faction-icon { background: rgba(156, 39, 176, 0.15); }
+
+        .faction-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .faction-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .faction-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .faction-location {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .faction-location span {
+            color: var(--accent-red);
+        }
+
+        /* ========== CHARACTER SECTION ========== */
+        .char-faction-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .char-faction-title .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .char-faction-title .dot.nova { background: var(--nova-color); }
+        .char-faction-title .dot.cheonwoo { background: var(--cheonwoo-color); }
+        .char-faction-title .dot.revenant { background: var(--revenant-color); }
+        .char-faction-title .dot.trickster { background: var(--trickster-color); }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 80px;
+        }
+
+        .char-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .char-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .char-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            /* 외부이미지칸 - 캐릭터 이미지 */
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .char-info {
+            padding: 20px;
+        }
+
+        .char-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .char-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .char-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .char-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .char-tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ========== NO (비정상존재) SECTION ========== */
+        .no-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .no-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .no-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .no-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 12px 0 80px;
+            opacity: 0.1;
+        }
+
+        .no-danger {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .no-danger.v0 { background: rgba(139, 195, 74, 0.15); color: var(--danger-v0); border: 1px solid var(--danger-v0); }
+        .no-danger.v1 { background: rgba(205, 220, 57, 0.15); color: var(--danger-v1); border: 1px solid var(--danger-v1); }
+        .no-danger.v2 { background: rgba(255, 193, 7, 0.15); color: var(--danger-v2); border: 1px solid var(--danger-v2); }
+        .no-danger.v3 { background: rgba(255, 152, 0, 0.15); color: var(--danger-v3); border: 1px solid var(--danger-v3); }
+        .no-danger.v4 { background: rgba(244, 67, 54, 0.15); color: var(--danger-v4); border: 1px solid var(--danger-v4); }
+        .no-danger.v5 { background: rgba(156, 39, 176, 0.15); color: var(--danger-v5); border: 1px solid var(--danger-v5); }
+
+        .no-serial {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .no-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .no-appearance {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .no-trait {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .no-counter {
+            font-size: 0.8rem;
+            padding: 10px 15px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 6px;
+            color: var(--accent-red-glow);
+            line-height: 1.5;
+        }
+
+        .no-counter-label {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--accent-red);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .no-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            /* 외부이미지칸 - NO 개체 이미지 */
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            padding: 60px 50px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-title {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .footer-warning {
+            font-size: 0.75rem;
+            color: var(--accent-red);
+            padding: 15px 25px;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 6px;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .faction-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 3rem;
+            }
+            section {
+                padding: 80px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 20px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .char-grid {
+                grid-template-columns: 1fr;
+            }
+            .no-grid {
+                grid-template-columns: 1fr;
+            }
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        /* ========== GLITCH EFFECT ========== */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            color: #ff0040;
+            opacity: 0.8;
+        }
+
+        .glitch::after {
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+            color: #0ff;
+            opacity: 0.8;
+        }
+
+        @keyframes glitch-1 {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-1px); }
+            80% { transform: translateX(2px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(3px); }
+            40% { transform: translateX(-3px); }
+            60% { transform: translateX(1px); }
+            80% { transform: translateX(-2px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ========== STATIC NOISE OVERLAY ========== */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ========== CLASSIFIED STAMP ========== */
+        .classified-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            border: 2px solid var(--accent-red);
+            padding: 5px 12px;
+            transform: rotate(5deg);
+            letter-spacing: 3px;
+            font-weight: 700;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="nav" id="navbar">
+        <a href="#" class="nav-logo">N<span>O</span>VA</a>
+        <ul class="nav-links">
+            <li><a href="#world">세계관</a></li>
+            <li><a href="#factions">세력</a></li>
+            <li><a href="#characters">인물</a></li>
+            <li><a href="#entities">비정상존재</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-subtitle">Non-Ordinary Verification Agency</p>
+            <h1 class="hero-title glitch" data-text="구출일지：구원자들">구출일지：구원자들</h1>
+            <p class="hero-desc">
+                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출했다.<br>
+                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어간다.<br>
+                경기도 가평군. 2027년. 구원은 아직 오지 않았다.
+            </p>
+        </div>
+        <span class="hero-year">2027</span>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- WORLD -->
+    <section id="world">
+        <div class="section-header">
+            <p class="section-label">WORLDVIEW</p>
+            <h2 class="section-title">세계관</h2>
+            <p class="section-desc">
+                비밀 국가기관 NOVA가 관리하던 비정상존재들이 일제히 격리를 돌파했다. 
+                도시 기능은 마비되었고, 인류는 포식자와 같은 공간에 놓였다.
+            </p>
+        </div>
+
+        <div class="world-timeline">
+            <div class="timeline-item">
+                <p class="timeline-year">2026 — 탈출 사태</p>
+                <h3 class="timeline-title">격리 붕괴</h3>
+                <p class="timeline-desc">
+                    전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출. 원인 불명. 
+                    다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 
+                    잔존 NO들은 여전히 활동 중이다.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <p class="timeline-year">2026 — 사태 초기</p>
+                <h3 class="timeline-title">NOVA 공개</h3>
+                <p class="timeline-desc">
+                    원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. 
+                    NO 제압에는 성공했으나 잔존 개체들의 활동이 계속되고 있다.
+                </p>
+            </div>
+            <div class="timeline-item">
+                <p class="timeline-year">2027 — 현재</p>
+                <h3 class="timeline-title">가평군, 생존자들</h3>
+                <p class="timeline-desc">
+                    경기도 가평군. 네 개의 세력이 각자의 이념과 목적 아래 충돌하고, 
+                    협력하고, 배신한다. 구원천사 세력의 확장이 감지되었고, 
+                    NOVA는 민간인 구출과 세력 제압을 위한 작전을 발령했다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FACTIONS -->
+    <section id="factions">
+        <div class="section-header">
+            <p class="section-label">FACTIONS</p>
+            <h2 class="section-title">세력</h2>
+            <p class="section-desc">
+                생존을 위해, 혹은 그 이상의 무언가를 위해 모인 자들. 
+                같은 하늘 아래 네 개의 세력이 공존한다.
+            </p>
+        </div>
+
+        <div class="faction-grid">
+            <div class="faction-card nova">
+                <div class="faction-icon">🛡️</div>
+                <h3 class="faction-name">NOVA</h3>
+                <p class="faction-subtitle">Non-Ordinary Verification Agency</p>
+                <p class="faction-desc">
+                    비정상존재를 연구·격리·관리하는 국가기관. 사태 이후 공개되었으며, 
+                    현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다. 
+                    TF-α(격리팀), 연구팀, 관리팀, 의료팀, 검증팀으로 구성.
+                </p>
+                <div class="faction-location">
+                    <span>📍</span> 北西 오토캠프장 (작전용 임시기지)
+                </div>
+            </div>
+
+            <div class="faction-card cheonwoo">
+                <div class="faction-icon">✝️</div>
+                <h3 class="faction-name">천우회</h3>
+                <p class="faction-subtitle">天羽會</p>
+                <p class="faction-desc">
+                    V-4 등급 NO '구원천사'가 창설한 사이비 단체. 
+                    구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다. 
+                    순교자, 인도자, 어린양으로 계급이 나뉜다.
+                </p>
+                <div class="faction-location">
+                    <span>📍</span> 東 자라섬
+                </div>
+            </div>
+
+            <div class="faction-card revenant">
+                <div class="faction-icon">🐺</div>
+                <h3 class="faction-name">레버넌트</h3>
+                <p class="faction-subtitle">REVENANT</p>
+                <p class="faction-desc">
+                    구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 
+                    합류해 만든 세력. 反NOVA 성향이 강하며, 들개조·올빼미조·다람쥐조로 구성.
+                </p>
+                <div class="faction-location">
+                    <span>📍</span> 南 호명산 숲속 캠핑장
+                </div>
+            </div>
+
+            <div class="faction-card trickster">
+                <div class="faction-icon">🎭</div>
+                <h3 class="faction-name">트릭스터</h3>
+                <p class="faction-subtitle">TRICKSTER</p>
+                <p class="faction-desc">
+                    2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 
+                    자기 식으로 재현하여 생존을 시도하나 맥락 누락으로 실패가 잦다. 
+                    정보 수집 능력은 높으나, 해석력은 낮다.
+                </p>
+                <div class="faction-location">
+                    <span>📍</span> 北 모텔 (주기적 이동 중)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section id="characters">
+        <div class="section-header">
+            <p class="section-label">CHARACTERS</p>
+            <h2 class="section-title">등장인물</h2>
+            <p class="section-desc">
+                각자의 사정과 신념을 안고 이 폐허에서 살아가는 자들.
+            </p>
+        </div>
+
+        <!-- NOVA -->
+        <h3 class="char-faction-title"><span class="dot nova"></span>NOVA 기관</h3>
+        <div class="char-grid">
+            <!-- 강태윤 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 강태윤 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="강태윤" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">강태윤</h4>
+                    <p class="char-role">TF-α 리더 ｜ 32세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        전직 특전사 대위. 원칙주의자이며 냉철한 판단으로 팀을 이끈다. 
+                        탈출 사태 초기 부하를 잃은 트라우마를 안고 있다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ISTJ</span>
+                        <span class="char-tag">NO.188 (AR)</span>
+                        <span class="char-tag">과묵</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서주희 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 서주희 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="서주희" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">서주희</h4>
+                    <p class="char-role">TF-α 부대원 ｜ 28세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        검증팀 출신으로 생존 능력이 규격 외라 격리팀에 강제 파견된 요원. 
+                        만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INTP</span>
+                        <span class="char-tag">NO.178 (쌍권총)</span>
+                        <span class="char-tag">무기력</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 김승우 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 김승우 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="김승우" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">김승우</h4>
+                    <p class="char-role">TF-α 부대원 ｜ 29세 ｜♂️</p>
+                    <p class="char-desc">
+                        전직 소방관 출신 생존자. 정이 많고 활발한 성격으로 팀 내 분위기를 밝히지만, 
+                        외로움을 잘 타는 면이 있다. 아파트에서 구조되어 합류.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ENFJ</span>
+                        <span class="char-tag">NO.192 (SMG)</span>
+                        <span class="char-tag">헌신적</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 도재현 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 도재현 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="도재현" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">도재현</h4>
+                    <p class="char-role">연구팀 연구원 ｜ 29세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        매드 사이언티스트 기질의 연구원. NO를 장난감 취급하며, 
+                        연구 데이터를 위해서라면 수단과 방법을 가리지 않는다. 유쾌하지만 사이코패스.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ENTP</span>
+                        <span class="char-tag">연구팀</span>
+                        <span class="char-tag">호기심</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 유채희 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 유채희 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="유채희" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">유채희</h4>
+                    <p class="char-role">관리팀 관리원 ｜ 27세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        전직 필라테스 강사. 미혹적인 매력과 여유로운 성격의 소유자. 
+                        경상도 사투리를 쓰며, 남의 것을 탐내는 버릇이 있다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ENFP</span>
+                        <span class="char-tag">관리팀</span>
+                        <span class="char-tag">매력적</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 은다솜 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 은다솜 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="은다솜" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">은다솜</h4>
+                    <p class="char-role">의료팀원 ｜ 22세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        의대생 출신으로 실전 경력이 많은 의료 요원. 
+                        헌신적이고 친절하지만 덜렁거리는 면이 있다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INFP</span>
+                        <span class="char-tag">의료팀</span>
+                        <span class="char-tag">상냥</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 천우회 -->
+        <h3 class="char-faction-title"><span class="dot cheonwoo"></span>천우회</h3>
+        <div class="char-grid">
+            <!-- 구원천사 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 구원천사 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="구원천사" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">구원천사</h4>
+                    <p class="char-role">교주 ｜ 나이 불명 ｜ ♀️ ｜ V-4</p>
+                    <p class="char-desc">
+                        NO-1004. 구원을 빙자해 유혹하며, 노래를 통해 자살을 유도하거나 
+                        심정지를 일으킨다. V-2 이하 NO도 조종 가능한 재앙에 가까운 존재.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ENFJ</span>
+                        <span class="char-tag">V-4</span>
+                        <span class="char-tag">세뇌</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 마진철 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 마진철 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="마진철" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">마진철</h4>
+                    <p class="char-role">인도자 ｜ 28세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        호전적이고 폭력적인 무력 대장. 구원천사의 초자연적 힘과 
+                        권력에 매료되어 세뇌를 받아들였다. 인간을 먹일수록 강화되는 무기를 사용.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ESTP</span>
+                        <span class="char-tag">NO.127 (배트)</span>
+                        <span class="char-tag">광기</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 백은하 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 백은하 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="백은하" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">백은하</h4>
+                    <p class="char-role">인도자 ｜ 29세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        전직 심리상담사. 온화한 겉모습 아래 잔혹함을 숨기고 있으며, 
+                        가스라이팅으로 민간인을 구원천사에게 인도하는 역할을 맡고 있다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INFJ</span>
+                        <span class="char-tag">가식</span>
+                        <span class="char-tag">가스라이팅</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 한소이 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 한소이 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="한소이" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">한소이</h4>
+                    <p class="char-role">어린양 ｜ 20세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        가족을 잃고 천우회에 강제 수용된 소녀. 구원천사를 믿는 척하며 
+                        가혹한 노동을 감내하고 있다. 소심하지만 눈치가 빠르다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ISFP</span>
+                        <span class="char-tag">순종</span>
+                        <span class="char-tag">강제수용</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 레버넌트 -->
+        <h3 class="char-faction-title"><span class="dot revenant"></span>레버넌트</h3>
+        <div class="char-grid">
+            <!-- 신지하 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 신지하 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="신지하" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">신지하</h4>
+                    <p class="char-role">레버넌트 대표 ｜ 38세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        전직 육군 소령. '민간인보다 정부인 보호'라는 명령에 반발해 부대를 이탈, 
+                        민간인 위주 구출에 나섰다. 카리스마 있고 내 식구를 과보호한다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ENTJ</span>
+                        <span class="char-tag">저격총</span>
+                        <span class="char-tag">카리스마</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 차권우 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 차권우 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="차권우" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">차권우</h4>
+                    <p class="char-role">들개조 리더 ｜ 30세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        전직 기계정비공. 냉소적이고 생존주의적이지만, 
+                        속은 따뜻한 츤데레. 위험을 즐기며 야생 감각이 탁월하다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ISTP</span>
+                        <span class="char-tag">돌격소총</span>
+                        <span class="char-tag">생존주의</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 임여름 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 임여름 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="임여름" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">임여름</h4>
+                    <p class="char-role">들개조원 ｜ 24세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        겁 없고 쾌활한 전투광. 들개조의 실질적 무력이자 분위기 메이커. 
+                        강한 멘탈로 어떤 상황에서도 꺾이지 않는다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ESFP</span>
+                        <span class="char-tag">돌격소총</span>
+                        <span class="char-tag">전투광</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 송지안 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 송지안 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="송지안" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">송지안</h4>
+                    <p class="char-role">올빼미조원 ｜ 25세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        진중하고 이성적인 연구가. NO를 혐오하며 격멸을 선호한다. 
+                        NOVA의 재격리 방침을 이해하지 못한다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INTJ</span>
+                        <span class="char-tag">기관단총</span>
+                        <span class="char-tag">NO 혐오</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 권진영 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 권진영 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="권진영" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">권진영</h4>
+                    <p class="char-role">다람쥐조원 ｜ 34세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        전직 정신과 의사. 생존자들의 정신 케어를 전담하며, 
+                        매일 자신의 정신도 갈리고 있다. 몰래 흡연하며 버티는 중.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INFJ</span>
+                        <span class="char-tag">권총</span>
+                        <span class="char-tag">경청</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 트릭스터 -->
+        <h3 class="char-faction-title"><span class="dot trickster"></span>트릭스터</h3>
+        <div class="char-grid">
+            <!-- 벨 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 벨 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="벨" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">벨</h4>
+                    <p class="char-role">관측·분석 담당 ｜ 21세 ｜ ♀️</p>
+                    <p class="char-desc">
+                        자칭 천재. 관측 노트를 소지하며 타 세력의 행동을 기록·분석한다. 
+                        까칠하고 장난기가 많지만, 의외로 똑똑하다. 다만 게으르다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">INTP</span>
+                        <span class="char-tag">비무장</span>
+                        <span class="char-tag">관측자</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 라오 -->
+            <div class="char-card">
+                <div class="char-img">
+                    <!-- 외부이미지칸 - 라오 캐릭터 이미지 -->
+                    <img src="외부이미지칸" alt="라오" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="char-info">
+                    <h4 class="char-name">라오</h4>
+                    <p class="char-role">행동 담당 ｜ 27세 ｜ ♂️</p>
+                    <p class="char-desc">
+                        벨의 지시를 잘 따르는 실행자. 속을 알 수 없는 미소를 짓는 무력 만렙. 
+                        생존력이 좋으며, 귀찮아하면서도 할 건 하는 성격. 카타나를 무기로 사용한다.
+                    </p>
+                    <div class="char-tags">
+                        <span class="char-tag">ISFP</span>
+                        <span class="char-tag">카타나</span>
+                        <span class="char-tag">무력 만렙</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NON-ORDINARY ENTITIES -->
+    <section id="entities">
+        <div class="section-header">
+            <p class="section-label">NON-ORDINARY</p>
+            <h2 class="section-title">비정상존재</h2>
+            <p class="section-desc">
+                격리를 벗어난 것들. 그것들에겐 이름 대신 번호가 붙는다.<br>
+                대응법을 모르면 죽는다. 아는 것만이 생존이다.
+            </p>
+        </div>
+
+        <div class="no-grid">
+            <!-- 머리없는 마네킹 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 머리없는 마네킹 이미지 -->
+                    <img src="외부이미지칸" alt="머리없는 마네킹" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v3">V-3 ｜ 위험</span>
+                <p class="no-serial">NO.266</p>
+                <h4 class="no-name">머리없는 마네킹</h4>
+                <p class="no-appearance">머리가 없는 나체 마네킹 형태</p>
+                <p class="no-trait">
+                    비관측 시 이동하며, 시선이 닿으면 정지한다. 
+                    옷을 입히면 일시적으로 온순해진다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    최소 1명 이상 관측 유지. 옷을 입히면 일시적 무력화.
+                </div>
+            </div>
+
+            <!-- 안식의 곰인형 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 안식의 곰인형 이미지 -->
+                    <img src="외부이미지칸" alt="안식의 곰인형" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v4">V-4 ｜ 치명</span>
+                <p class="no-serial">NO.98</p>
+                <h4 class="no-name">안식의 곰인형</h4>
+                <p class="no-appearance">작은 갈색 곰인형. 목에 붉은 리본.</p>
+                <p class="no-trait">
+                    평소 곰인형 상태를 유지하나, 방심하고 접근 시 등에서 촉수가 출현. 
+                    촉수 발현 시 입이 크게 찢어져 벌어진다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    절대 접근 금지. 최소 2명 이상 동반 필수. 독행 불가.
+                </div>
+            </div>
+
+            <!-- 안개늑대 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 안개늑대 이미지 -->
+                    <img src="외부이미지칸" alt="안개늑대" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v2">V-2 ｜ 주의</span>
+                <p class="no-serial">NO.332</p>
+                <h4 class="no-name">안개늑대</h4>
+                <p class="no-appearance">늑대 형태의 안개</p>
+                <p class="no-trait">
+                    주변 안개 농도를 높이며, 물리 공격이 불가능하다. 
+                    시각·청각이 없으나 호흡과 높은 체온을 감지한다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    숨 참기 + 체온 저하 유지. 따뜻한 물건 투척으로 교란 가능.
+                </div>
+            </div>
+
+            <!-- 카메라맨 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 카메라맨 이미지 -->
+                    <img src="외부이미지칸" alt="카메라맨" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v1">V-1 ｜ 경미</span>
+                <p class="no-serial">NO.2520</p>
+                <h4 class="no-name">카메라맨</h4>
+                <p class="no-appearance">정장 남성의 몸에 카메라 머리</p>
+                <p class="no-trait">
+                    촬영 시 대상의 미래 한 순간을 사진으로 출력한다. 
+                    플래시 섬광 효과가 있으며, 기분에 따라 촬영을 거부할 수 있다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    얼굴을 가린 채 촬영 시 일반 사진만 출력됨.
+                </div>
+            </div>
+
+            <!-- 얼굴가린 여인 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 얼굴가린 여인 이미지 -->
+                    <img src="외부이미지칸" alt="얼굴가린 여인" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v4">V-4 ｜ 치명</span>
+                <p class="no-serial">NO.804</p>
+                <h4 class="no-name">얼굴가린 여인</h4>
+                <p class="no-appearance">흑발, 흰 눈, 긴 손톱, 앙상한 몸, 화상 자국, 잘린 혀</p>
+                <p class="no-trait">
+                    쳐다볼 시 맹추격한다. 평상시에는 울고 있으며, 
+                    쳐다보지 않으면 온순한 상태를 유지한다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    절대 쳐다보지 않을 것. 시선 회피만이 유일한 생존법.
+                </div>
+            </div>
+
+            <!-- 라미아 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 라미아 이미지 -->
+                    <img src="외부이미지칸" alt="라미아" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v5">V-5 ｜ 재앙급</span>
+                <p class="no-serial">NO.450</p>
+                <h4 class="no-name">라미아</h4>
+                <p class="no-appearance">녹색 머리, 적안, 상반신 여성, 하반신 백색 뱀</p>
+                <p class="no-trait">
+                    주변 지면을 늪지화하며, 부식성 독을 주입해 먹잇감을 서서히 액화시킨다. 
+                    소화가 고속으로 진행되어 증거가 거의 남지 않는다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    이동 시 지면 사전 확인 필수. 독 접촉 시 즉시 중성화.
+                </div>
+            </div>
+
+            <!-- 데시벨 헌터 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 데시벨 헌터 이미지 -->
+                    <img src="외부이미지칸" alt="데시벨 헌터" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v5">V-5 ｜ 재앙급</span>
+                <p class="no-serial">NO.10</p>
+                <h4 class="no-name">데시벨 헌터</h4>
+                <p class="no-appearance">눈·코 없음, 검은 피부, 날카롭고 긴 앞발</p>
+                <p class="no-trait">
+                    시력이 없으나 청각이 극도로 예민하다. 
+                    극도로 공격적이며, 소리를 내는 모든 것을 사냥한다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    절대 침묵 유지. 고주파 발생기 활용. 불로 일시 무력화 가능.
+                </div>
+            </div>
+
+            <!-- 냥타로 -->
+            <div class="no-card">
+                <div class="no-img">
+                    <!-- 외부이미지칸 - 냥타로 이미지 -->
+                    <img src="외부이미지칸" alt="냥타로" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                </div>
+                <span class="no-danger v3">V-3 ｜ 위험</span>
+                <p class="no-serial">NO.494</p>
+                <h4 class="no-name">냥타로</h4>
+                <p class="no-appearance">회색+주홍 무늬 고양이 인형탈, 적안, 꿰멘 자국</p>
+                <p class="no-trait">
+                    초기에 친절한 도움을 제공(길 안내, 물건 수리 등)하나, 
+                    도움 수령량이 증가할수록 사랑을 요구한다. 요구 미충족 시 
+                    대상을 안아 흡수하며, 흡수된 대상은 모든 타인의 기억에서 삭제된다.
+                </p>
+                <div class="no-counter">
+                    <p class="no-counter-label">⚠ 대응법</p>
+                    과도한 친밀감 표현 자제. 도움 거부.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3 class="footer-title">구출일지：구원자들</h3>
+        <p class="footer-desc">2027. 경기도 가평군. 아직 끝나지 않았다.</p>
+        <div class="footer-warning">
+            ⚠ 본 기록물은 NOVA 기밀 등급 문서입니다
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Fade in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.char-card, .no-card, .faction-card, .timeline-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
