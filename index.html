@@ -50,7 +50,7 @@
         .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 외부이미지칸 - 히어로 배경 (폐허/아포칼립스 도시 배경) */
+            /* ![](https://toi.itoo.uk/qorud.png) */
             background: url('외부이미지칸') center/cover no-repeat;
             filter: brightness(0.2) saturate(0.3); z-index: 0;
         }
@@ -326,7 +326,7 @@
     <div class="noise-overlay"></div>
 
     <!-- 배경음악 : 노래삽입예정 (아래 audio 태그의 src 부분에 음원 경로를 넣어주세요) -->
-    <audio id="bgm" src="노래삽입예정" loop preload="none"></audio>
+    <audio id="bgm" src="NOVA브금" loop preload="none"></audio>
 
     <!-- NAVIGATION -->
     <nav class="nav" id="navbar">
@@ -365,9 +365,9 @@
             <h1 class="hero-title">구출일지<span class="colon">：</span>구원자들</h1>
             <div class="hero-rule"></div>
             <p class="hero-desc">
-                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출했다.<br>
-                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어간다.<br>
-                경기도 가평군. 2027년. 구원은 아직 오지 않았다.
+                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출하였다.<br>
+                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어가고있다.<br>
+                이곳은 경기도 가평군, 2027년. 구원은 아직 오지 않았다.
             </p>
         </div>
         <span class="hero-year">2027</span>
@@ -383,19 +383,19 @@
         </div>
         <div class="world-timeline">
             <div class="timeline-item">
-                <p class="timeline-year">2026 — 탈출 사태</p>
+                <p class="timeline-year">2026.02.07 — 탈출 사태</p>
                 <h3 class="timeline-title">격리 붕괴</h3>
-                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출. 원인 불명. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 잔존 NO들은 여전히 활동 중이다.</p>
+                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출하였다. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 잔존 NO들은 여전히 활동 중이다.</p>
             </div>
             <div class="timeline-item">
-                <p class="timeline-year">2026 — 사태 초기</p>
+                <p class="timeline-year">2026.02.07 — 사태 초기</p>
                 <h3 class="timeline-title">NOVA 공개</h3>
-                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. NO 제압에는 성공했으나 잔존 개체들의 활동이 계속되고 있다.</p>
+                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. 몇몇 NO 제압에는 성공했으나 아직까진 많은 잔존 개체들의 활동이 계속되고 있다.</p>
             </div>
             <div class="timeline-item">
                 <p class="timeline-year">2027 — 현재</p>
-                <h3 class="timeline-title">가평군, 생존자들</h3>
-                <p class="timeline-desc">경기도 가평군. 네 개의 세력이 각자의 이념과 목적 아래 충돌하고, 협력하고, 배신한다. 구원천사 세력의 확장이 감지되었고, NOVA는 민간인 구출과 세력 제압을 위한 작전을 발령했다.</p>
+                <h3 class="timeline-title">작전 발령</h3>
+                <p class="timeline-desc">수많은 작전들이 진행되는곳중 하나인 이곳은 경기도 가평군. 구원천사 세력의 확장이 감지되었고, NOVA기관 본사는 민간인 구출과 세력 제압을 위한 작전을 발령하였다.</p>
             </div>
         </div>
     </section>
@@ -405,36 +405,36 @@
         <div class="section-header">
             <p class="section-label">FACTIONS</p>
             <h2 class="section-title">세력</h2>
-            <p class="section-desc">생존을 위해, 혹은 그 이상의 무언가를 위해 모인 자들. 같은 하늘 아래 네 개의 세력이 공존한다.</p>
+            <p class="section-desc">생존을 위해, 혹은 그 이상의 무언가를 위해 모인 자들.</p>
         </div>
         <div class="faction-grid">
             <div class="faction-card nova">
                 <div class="faction-icon">🛡️</div>
                 <h3 class="faction-name">NOVA</h3>
                 <p class="faction-subtitle">Non-Ordinary Verification Agency</p>
-                <p class="faction-desc">비정상존재를 연구·격리·관리하는 국가기관. 사태 이후 공개되었으며, 현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다. TF-α(격리팀), 연구팀, 관리팀, 의료팀, 검증팀으로 구성.</p>
-                <div class="faction-location"><span>📍</span> 北西 오토캠프장 (작전용 임시기지)</div>
+                <p class="faction-desc">비정상존재를 연구·격리·관리·검증하는 국가기관. 사태 이후 공개되었으며, 현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다. TF-α(격리팀), 연구팀, 관리팀, 의료팀, 검증팀으로 구성되어있다.</p>
+                <div class="faction-location"><span>📍</span> 북서쪽 오토캠프장 (작전용 임시기지)</div>
             </div>
             <div class="faction-card cheonwoo">
                 <div class="faction-icon">✝️</div>
                 <h3 class="faction-name">천우회</h3>
                 <p class="faction-subtitle">天羽會</p>
-                <p class="faction-desc">V-4 등급 NO '구원천사'가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다. 순교자, 인도자, 어린양으로 계급이 나뉜다.</p>
-                <div class="faction-location"><span>📍</span> 東 자라섬</div>
+                <p class="faction-desc">'구원천사'가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다. 순교자, 인도자, 어린양으로 계급으로 구성되어있다.</p>
+                <div class="faction-location"><span>📍</span> 동쪽 자라섬</div>
             </div>
             <div class="faction-card revenant">
                 <div class="faction-icon">🐺</div>
                 <h3 class="faction-name">레버넌트</h3>
                 <p class="faction-subtitle">REVENANT</p>
-                <p class="faction-desc">구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. 反NOVA 성향이 강하며, 들개조·올빼미조·다람쥐조로 구성.</p>
-                <div class="faction-location"><span>📍</span> 南 호명산 숲속 캠핑장</div>
+                <p class="faction-desc">구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. NOVA기관을 대부분 싫어하며, 들개조, 올빼미조, 다람쥐조로 구성되어있다.</p>
+                <div class="faction-location"><span>📍</span> 남쪽 호명산 숲속 캠핑장</div>
             </div>
             <div class="faction-card trickster">
                 <div class="faction-icon">🎭</div>
                 <h3 class="faction-name">트릭스터</h3>
                 <p class="faction-subtitle">TRICKSTER</p>
-                <p class="faction-desc">2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 맥락 누락으로 실패가 잦다. 정보 수집 능력은 높으나, 해석력은 낮다.</p>
-                <div class="faction-location"><span>📍</span> 北 모텔 (주기적 이동 중)</div>
+                <p class="faction-desc">2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 실패가 잦다. 정보 수집 능력은 높으나, 해석력은 낮은편이다.</p>
+                <div class="faction-location"><span>📍</span> 북쪽 모텔 (주기적 이동 중)</div>
             </div>
         </div>
     </section>
@@ -547,27 +547,27 @@
         // "외부이미지칸" 문자를 실제 이미지 경로로 바꿔서 사용하세요. 더 넣고 싶으면 배열에 항목을 추가하면 됩니다.
         const characters = [
             { id:'kty', faction:'nova', name:'강태윤', gender:'♂', age:32, role:'TF-α 리더', mbti:'ISTJ', tags:['NO.188 (AR)','과묵'],
-              background:'전직 특전사 대위. 탈출 사태 초기 부하를 잃은 트라우마를 안고 있다.',
+              background:'전직 특전사 대위. 무언가 트라우마를 안고 있는거같다.',
               personality:'원칙주의자이며 냉철한 판단으로 팀을 이끈다.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'sjh', faction:'nova', name:'서주희', gender:'♀', age:28, role:'TF-α 부대원', mbti:'INTP', tags:['NO.178 (쌍권총)','무기력'],
-              background:'검증팀 출신으로 생존 능력이 규격 외라 격리팀에 강제 파견된 요원.',
+              background:'검증팀 출신이며 특이사항으로 격리팀에 강제 파견되었다.',
               personality:'만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'ksw', faction:'nova', name:'김승우', gender:'♂', age:29, role:'TF-α 부대원', mbti:'ENFJ', tags:['NO.192 (SMG)','헌신적'],
-              background:'전직 소방관 출신 생존자. 아파트에서 구조되어 합류.',
+              background:'전직 소방관 출신 생존자. 아파트에서 구조되어 합류되었다.',
               personality:'정이 많고 활발한 성격으로 팀 내 분위기를 밝히지만, 외로움을 잘 타는 면이 있다.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'djh', faction:'nova', name:'도재현', gender:'♂', age:29, role:'연구팀 연구원', mbti:'ENTP', tags:['연구팀','호기심'],
-              background:'매드 사이언티스트 기질의 연구원.',
+              background:'매드 사이언티스트의 연구원.',
               personality:'NO를 장난감 취급하며, 연구 데이터를 위해서라면 수단과 방법을 가리지 않는다. 유쾌하지만 사이코패스.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'ych', faction:'nova', name:'유채희', gender:'♀', age:27, role:'관리팀 관리원', mbti:'ENFP', tags:['관리팀','매력적'],
-              background:'전직 필라테스 강사.',
+              background:'전직 필라테스 강사. 아파트에서 구조되어 합류되었다.',
               personality:'미혹적인 매력과 여유로운 성격의 소유자. 경상도 사투리를 쓰며, 남의 것을 탐내는 버릇이 있다.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'eds', faction:'nova', name:'은다솜', gender:'♀', age:22, role:'의료팀원', mbti:'INFP', tags:['의료팀','상냥'],
-              background:'의대생 출신으로 실전 경력이 많은 의료 요원.',
+              background:'의대생 출신으로 실전 경력이 많은 의료원. 아파트에서 구조되어 합류되었다.',
               personality:'헌신적이고 친절하지만 덜렁거리는 면이 있다.',
               images:['외부이미지칸','외부이미지칸','외부이미지칸'] },
             { id:'guardian', faction:'cheonwoo', name:'구원천사', gender:'♀', age:'불명', role:'교주', mbti:'ENFJ', tags:['V-4','NO-1004','세뇌'],
