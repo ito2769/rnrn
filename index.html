@@ -683,7 +683,7 @@
             { id:'kty', faction:'nova', name:'강태윤', gender:'♂', age:32, role:'TF-α 리더', mbti:'ISTJ', tags:['NO.188 (AR)','과묵'],
               appearance:'', personality:'원칙주의자이며 냉철한 판단으로 팀을 이끈다.',
               background:'전직 특전사 대위. 탈출 사태 초기 부하를 잃은 트라우마를 안고 있다.', quote:'',
-              images:['![](https://rnd.itoo.uk/기타/사이트용/1.png)','https://rnd.itoo.uk/강태윤/11.webp','https://rnd.itoo.uk/강태윤/13.webp','https://rnd.itoo.uk/강태윤/14.webp'] },
+              images:['https://rnd.itoo.uk/기타/사이트용/1.png','https://rnd.itoo.uk/강태윤/11.webp','https://rnd.itoo.uk/강태윤/13.webp','https://rnd.itoo.uk/강태윤/14.webp'] },
             { id:'sjh', faction:'nova', name:'서주희', gender:'♀', age:28, role:'TF-α 부대원', mbti:'INTP', tags:['NO.178 (쌍권총)','무기력'],
               appearance:'', personality:'만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.',
               background:'검증팀 출신으로 생존 능력이 규격 외라 격리팀에 강제 파견된 요원.', quote:'',
@@ -846,8 +846,8 @@
                     ${list.map(c => `
                         <button class="char-card" data-id="${c.id}" style="--fac-color:${factionColorVar[fac]}" aria-label="${c.name} 상세 보기">
                             <div class="char-img-wrap">
-                                <!-- 외부이미지칸 - ${c.name} 대표 이미지 -->
-                                <img src="외부이미지칸" alt="${c.name}">
+                                <!-- 외부이미지칸 - ${c.name} 대표 이미지 (자동으로 images[0] 사용) -->
+                                <img src="${c.images && c.images[0] ? c.images[0] : '외부이미지칸'}" alt="${c.name}">
                                 <div class="char-img-overlay"><span>상세보기 ▸</span></div>
                             </div>
                             <div class="char-info">
@@ -876,8 +876,8 @@
         noGridEl.innerHTML = noEntities.map(n => `
             <button class="no-card" data-id="${n.id}" aria-label="${n.name} 기록 보기">
                 <div class="no-card-img">
-                    <!-- 외부이미지칸 - ${n.name} 대표 이미지 -->
-                    <img src="외부이미지칸" alt="${n.name}">
+                    <!-- 외부이미지칸 - ${n.name} 대표 이미지 (자동으로 image 필드 사용) -->
+                    <img src="${n.image ? n.image : '외부이미지칸'}" alt="${n.name}">
                     <span class="no-danger ${n.danger} no-card-danger-tag">${n.dangerLabel}</span>
                 </div>
                 <div class="no-card-body">
