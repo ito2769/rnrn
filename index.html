@@ -141,7 +141,7 @@
             background: url('https://rnd.itoo.uk/기타/사이트용/메인.webp') center 15%/cover no-repeat;
             filter: saturate(0.92); z-index: 0;
         }
-        .hero-art-tint { position: absolute; inset: 0; z-index: 0; background: #060608; mix-blend-mode: multiply; opacity: 0.55; pointer-events: none; }
+        .hero-art-tint { position: absolute; inset: 0; z-index: 0; background: #060608; mix-blend-mode: multiply; opacity: 0.48; pointer-events: none; }
         .hero-top-fade { position: absolute; top: 0; left: 0; width: 100%; height: 220px; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); z-index: 1; pointer-events: none; }
         .hero-side-fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to right, var(--bg-primary) 0%, transparent 22%, transparent 78%, var(--bg-primary) 100%); }
         .hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 46%; background: linear-gradient(transparent, var(--bg-primary)); z-index: 1; }
@@ -489,9 +489,10 @@
             <p class="hero-title-sub">구원자들</p>
             <div class="hero-rule"></div>
             <p class="hero-desc">
-                2026년, 격리되어 있던 비정상존재(NO)들이 전 세계로 탈출했다.<br>
-                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어간다.<br>
-                경기도 가평군. 2027년. 구원은 아직 오지 않았다.
+                2026년 2월, 격리되어 있던 비정상존재(NO)들이 전 세계에서 탈출하였다.<br>
+                문명은 붕괴했고, 살아남은 자들은 각자의 방식으로 생존을 이어가고있다.<br>
+                이곳은 많은곳중 하나인 경기도 가평군.2027년.
+                구원은 아직 오지 않았다.
             </p>
         </div>
         <span class="hero-year">2027</span>
@@ -503,23 +504,23 @@
         <div class="section-header">
             <p class="section-label">WORLDVIEW</p>
             <h2 class="section-title">세계관</h2>
-            <p class="section-desc">비밀 국가기관 NOVA가 관리하던 비정상존재들이 일제히 격리를 돌파했다. 도시 기능은 마비되었고, 인류는 포식자와 같은 공간에 놓였다.</p>
+            <p class="section-desc">비밀 국가기관 NOVA가 관리하던 비정상존재들이 일제히 격리를 탈출했다. 도시 기능은 마비되었고, 인류는 포식자와 같은 공간에 놓였다.</p>
         </div>
         <div class="world-timeline">
             <div class="timeline-item">
                 <p class="timeline-year">2026 — 탈출 사태</p>
                 <h3 class="timeline-title">격리 붕괴</h3>
-                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출. 원인 불명. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 잔존 NO들은 여전히 활동 중이다.</p>
+                <p class="timeline-desc">전 세계 NOVA 시설에서 비정상존재들이 동시에 탈출. 다수의 인류가 포식당하거나 사망했으며, 일부는 구출에 성공했으나 아직까지 잔존된 많은 NO들은 여전히 활동 중이다.</p>
             </div>
             <div class="timeline-item">
                 <p class="timeline-year">2026 — 사태 초기</p>
                 <h3 class="timeline-title">NOVA 공개</h3>
-                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다. NO 제압에는 성공했으나 잔존 개체들의 활동이 계속되고 있다.</p>
+                <p class="timeline-desc">원래 비밀 기관이었던 NOVA가 사태의 심각성으로 인해 세상에 공개되었다.</p>
             </div>
             <div class="timeline-item">
                 <p class="timeline-year">2027 — 현재</p>
-                <h3 class="timeline-title">가평군, 생존자들</h3>
-                <p class="timeline-desc">경기도 가평군. 네 개의 세력이 각자의 이념과 목적 아래 충돌하고, 협력하고, 배신한다. 구원천사 세력의 확장이 감지되었고, NOVA는 민간인 구출과 세력 제압을 위한 작전을 발령했다.</p>
+                <h3 class="timeline-title">가평군</h3>
+                <p class="timeline-desc">많은 작전발령지중 한곳인 경기도 가평군. 이곳은 네 개의 세력이 각자의 이념과 목적 아래 충돌하고, 협력하고, 배신한다. 구원천사 세력의 확장이 감지되었고, NOVA본사는 민간인 구출과 세력 제압을 위해 작전을 발령했다.</p>
             </div>
         </div>
     </section>
@@ -572,7 +573,7 @@
     <!-- FOOTER -->
     <footer>
         <h3 class="footer-title">구출일지：구원자들</h3>
-        <p class="footer-desc">2027. 경기도 가평군. 아직 끝나지 않았다.</p>
+        <p class="footer-desc">2027. 아직 끝나지 않았다.</p>
         <div class="footer-warning">⚠ 본 기록물은 NOVA 기밀 등급 문서입니다</div>
     </footer>
 
@@ -640,145 +641,145 @@
 
         const factions = [
             { id:'nova', name:'NOVA', subtitle:'Non-Ordinary Verification Agency', location:'📍북서쪽 오토캠프장 (작전용 임시기지)',
-              desc:'비정상존재를 연구·격리·관리하는 국가기관. 사태 이후 공개되었으며, 현재 가평군에서 민간인 구출 및 구원천사 세력 제압 작전을 수행 중이다.' },
+              desc:'비정상존재를 연구·격리·관리·검증하는 국가기관. 현재 가평군에서 민간인 구출 및 구원천사 세력 제압을 위해 팀을 만들어 발령되었다.' },
             { id:'cheonwoo', name:'천우회', subtitle:'天羽會', location:'📍동쪽 자라섬',
-              desc:"V-4 등급 NO '구원천사'가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 확장 중이다." },
+              desc:"구원천사가 창설한 사이비 단체. 구원을 명목으로 생존자를 유혹하여 세력을 더욱더 확장 중이다." },
             { id:'revenant', name:'레버넌트', subtitle:'REVENANT', location:'📍남쪽 호명산 숲속 캠핑장',
-              desc:'구조를 기다리다 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. 反NOVA 성향이 강하다.' },
+              desc:'구조를 기다리다 지쳐 버림받은 민간인들과 NOVA에 불만을 품고 이탈한 군인들이 합류해 만든 세력. NOVA를 싫어하는 성향이 강하다.' },
             { id:'trickster', name:'트릭스터', subtitle:'TRICKSTER', location:'📍북쪽 모텔어딘가 (주기적 이동 중)',
-              desc:'2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 맥락 누락으로 실패가 잦다.' },
+              desc:'2인조 독립 세력. 타 세력의 NO 대응을 원거리 관측한 뒤, 자기 식으로 재현하여 생존을 시도하나 실패가 잦다.' },
         ];
 
         const factionTeams = {
             nova: [
-                { name:'TF-α (격리팀)', desc:'비정상존재 현장 대응과 격리를 담당하는 전투 부대.' },
-                { name:'연구팀', desc:'NO의 특성을 분석하고 대응 데이터를 축적하는 부서.' },
-                { name:'관리팀', desc:'기지 운영과 물자, 인력을 관리하는 부서.' },
-                { name:'의료팀', desc:'부상자 치료와 생존자 건강을 담당하는 부서.' },
-                { name:'검증팀', desc:'요원의 능력과 이상 유무를 판별, 검증하는 부서.' },
+                { name:'TF-α (격리팀)', desc:'테스크포스 알바팀. 작전에 발령된 요원을 모아 만든임시팀, 비정상존재들을 현장대응과 격리를 담당한다.' },
+                { name:'연구팀', desc:'NO의 특성을 분석하고 제어하며 그들을 이용하는 연구들을 다양하게한다. 위험등급도 이곳에서 산정한다.' },
+                { name:'관리팀', desc:'NO들을 관리하며 기지 운영과 물자, 인력을 관리하고있다.' },
+                { name:'의료팀', desc:'부상자 치료와 생존자 건강을 담당하고있다.' },
+                { name:'검증팀', desc:'미확인된 NO들을 최초확인하며 위험요소 및 대응법을 검증해 보고서를 작성한다. 이 과정에서 사망하는 요원들이 많다.' },
             ],
             cheonwoo: [
-                { name:'순교자', desc:'구원천사를 위해 스스로를 희생하는 최상위 신봉자.' },
-                { name:'인도자', desc:'신도를 관리하고 포섭을 주도하는 중간 간부.' },
-                { name:'어린양', desc:'갓 들어왔거나 강제로 수용된 하위 신도.' },
+                { name:'순교자', desc:'구원천사를 위해 스스로를 희생하는 신봉자들, 그들은 공포가 존재하지않는다.' },
+                { name:'인도자', desc:'신도를 관리하고 포섭을 주도하는 중간 간부들이다.' },
+                { name:'어린양', desc:'들어온지 얼마안된 신도들, 대부분 혹독한 노동을 받고있다.' },
             ],
             revenant: [
-                { name:'들개조', desc:'전투와 정찰을 전담하는 무력 부대.' },
-                { name:'올빼미조', desc:'정보 수집과 야간 감시를 담당하는 부대.' },
-                { name:'다람쥐조', desc:'물자 확보와 생존자 케어를 담당하는 부대.' },
+                { name:'들개조', desc:'전투와 정찰,수색,물자조달 등 전담하는 무력 부대이다.' },
+                { name:'올빼미조', desc:'정보 수집과 야간 감시 및 NO들의 약점과 확실하게 죽일방법들을 연구하고있는 부대이다.' },
+                { name:'다람쥐조', desc:'요리·의료·물자관리 등 생존자 케어를 담당하는 부대이다.' },
             ],
             trickster: [
-                { name:'관측·분석 담당', desc:'정보를 수집하고 상황을 해석하는 역할.' },
-                { name:'행동 담당', desc:'실제로 움직여 문제를 해결하는 실행 역할.' },
+                { name:'관측·분석 담당', desc:'정보를 수집하고 상황을 해석하는 역할을 맡고있다.' },
+                { name:'행동 담당', desc:'실제로 움직여 문제를 해결하는 실행하는 역할을 맡고있다.' },
             ],
         };
 
         // 캐릭터의 외형(appearance)과 한마디(quote)는 비워두었습니다. 직접 채워주세요.
         const characters = [
-            { id:'kty', faction:'nova', name:'강태윤', gender:'♂', age:32, role:'TF-α 리더', mbti:'ISTJ', tags:['NO.188 (AR)','과묵'],
-              appearance:'', personality:'원칙주의자이며 냉철한 판단으로 팀을 이끈다.',
-              background:'전직 특전사 대위. 탈출 사태 초기 부하를 잃은 트라우마를 안고 있다.', quote:'',
+            { id:'kty', faction:'nova', name:'강태윤', gender:'남성', age:32, role:'TF-α 리더', mbti:'ISTJ', tags:['NO.188 (AR)','관통력이 높다'],
+              appearance:'밝은 연청록색 머리를 낮게 묶어 내렸으며, 파란 브릿지가 눈에 띈다. 푸른 눈동자와 검은 안대가 특징이며 키는 194cm 이다.', personality:'냉철하고 과묵하며 책임감강함이 강한편이다.',
+              background:'전직 특전사 대위출신. 탈출 사태 초기때의 무언가 트라우마를 안고있는듯 하다.', quote:'작전 중 불필요한 감정 소모는 금물이다. 모든 판단은 원칙에 근거한다.',
               images:['https://rnd.itoo.uk/기타/사이트용/1.png','https://rnd.itoo.uk/강태윤/11.webp','https://rnd.itoo.uk/강태윤/13.webp','https://rnd.itoo.uk/강태윤/14.webp'] },
-            { id:'sjh', faction:'nova', name:'서주희', gender:'♀', age:28, role:'TF-α 부대원', mbti:'INTP', tags:['NO.178 (쌍권총)','무기력'],
-              appearance:'', personality:'만사가 귀찮지만 총기와 화학에 있어서는 전문가. 카페인 중독.',
-              background:'검증팀 출신으로 생존 능력이 규격 외라 격리팀에 강제 파견된 요원.', quote:'',
+            { id:'sjh', faction:'nova', name:'서주희', gender:'여성', age:28, role:'TF-α 부대원', mbti:'INTP', tags:['NO.178 (쌍권총)','화학을 주입해 탄을 변환시킨다'],
+              appearance:'긴 흑발의 포니테일과 주황색 눈동자를 가졌다. 키는 158cm이다.', personality:'만사가 귀찮고 무기력한 태도를 보이며, 항상 침착함을 유지한다. 말을 단축해서 말하려는 경향이 있다.',
+              background:'원래는 검증팀이였으나, 생존력과 NO제압이 매우 우수하여 이번 작전에 격리팀으로 파견되었다.', quote:'아... 귀찮아. 그냥 쏘면 되는 거 아닌가.',
               images:['https://rnd.itoo.uk/기타/사이트용/3.png','https://rnd.itoo.uk/서주희/11.webp','https://rnd.itoo.uk/서주희/13.webp','https://rnd.itoo.uk/서주희/14.webp'] },
-            { id:'ksw', faction:'nova', name:'김승우', gender:'♂', age:29, role:'TF-α 부대원', mbti:'ENFJ', tags:['NO.192 (SMG)','헌신적'],
-              appearance:'', personality:'정이 많고 활발한 성격으로 팀 내 분위기를 밝히지만, 외로움을 잘 타는 면이 있다.',
-              background:'전직 소방관 출신 생존자. 아파트에서 구조되어 합류.', quote:'',
+            { id:'ksw', faction:'nova', name:'김승우', gender:'남성', age:29, role:'TF-α 부대원', mbti:'ENFJ', tags:['NO.192 (SMG)','총알이 소진시 7초후 재생성된다.'],
+              appearance:'연갈색의 짦은 머리를 가졌으며, 초록색 눈동자를 가졌다. 키는 189cm이다.', personality:'정이많고 활발하며 사교적이다. 타인에게 헌신적이며 약간의 백치미가 있다.',
+              background:'전직 소방관 출신, 아파트에서 구조된 생존자이다.', quote:'도움이 필요하시면 언제든 말씀하세요! 제가 할 수 있는 일이라면 뭐든 돕겠습니다.',
               images:['https://rnd.itoo.uk/기타/사이트용/2.png','https://rnd.itoo.uk/김승우/11.webp','https://rnd.itoo.uk/김승우/13.webp','https://rnd.itoo.uk/김승우/14.webp'] },
-            { id:'djh', faction:'nova', name:'도재현', gender:'♂', age:29, role:'연구팀 연구원', mbti:'ENTP', tags:['연구팀','호기심'],
-              appearance:'', personality:'NO를 장난감 취급하며, 연구 데이터를 위해서라면 수단과 방법을 가리지 않는다. 유쾌하지만 사이코패스.',
-              background:'매드 사이언티스트 기질의 연구원.', quote:'',
+            { id:'djh', faction:'nova', name:'도재현', gender:'남성', age:29, role:'연구팀 연구원', mbti:'ENTP', tags:['권총'],
+              appearance:'하얀머리의 짦은 머리와 흰색눈동자를 가졌으며, 회색 안경을 착용하고있다. 키는 188cm이다.', personality:'호기심이 매우 강하며 유쾌하면서 매드 사이언티스트이자 사이코패스기질을 가졌다.',
+              background:'NO들을 장난감처럼 취급하려하며, 새로운 연구 데이터를 얻기위해선 수단을 가리지않는다.', quote:'아아, 흥미롭네요. 그걸 그렇게 자르면 어떻게 반응할지, 한 번 볼까요? 물론 당신 몸으로 말입니다.',
               images:['https://rnd.itoo.uk/기타/사이트용/4.png','https://rnd.itoo.uk/도재현/11.webp','https://rnd.itoo.uk/도재현/13.webp','https://rnd.itoo.uk/도재현/14.webp'] },
-            { id:'ych', faction:'nova', name:'유채희', gender:'♀', age:27, role:'관리팀 관리원', mbti:'ENFP', tags:['관리팀','매력적'],
-              appearance:'', personality:'미혹적인 매력과 여유로운 성격의 소유자. 경상도 사투리를 쓰며, 남의 것을 탐내는 버릇이 있다.',
-              background:'전직 필라테스 강사.', quote:'',
+            { id:'ych', faction:'nova', name:'유채희', gender:'여성', age:27, role:'관리팀 관리원', mbti:'ENFP', tags:['권총'],
+              appearance:'짙은 보라색 장발과 자홍색의 눈동자를 가졌다. 왼쪽 눈 밑에는 점이있으며 키는 164cm이다.', personality:'미혹적이고 매력적이며 성숙한 여유를 가지고있다.',
+              background:'전직 필라테스 강사출신, 아파트에서 구조된 생존자이다. 여우짓에 능숙하며 남의것을 탐내어 욕심이 많다.', quote:'우짜겠노, 갖고 싶은 건 가져야지. 안 그라믄 병난다 아이가?',
               images:['https://rnd.itoo.uk/기타/사이트용/5.png','https://rnd.itoo.uk/유채희/11.webp','https://rnd.itoo.uk/유채희/13.webp','https://rnd.itoo.uk/유채희/14.webp'] },
-            { id:'eds', faction:'nova', name:'은다솜', gender:'♀', age:22, role:'의료팀원', mbti:'INFP', tags:['의료팀','상냥'],
-              appearance:'', personality:'헌신적이고 친절하지만 덜렁거리는 면이 있다.',
-              background:'의대생 출신으로 실전 경력이 많은 의료 요원.', quote:'',
+            { id:'eds', faction:'nova', name:'은다솜', gender:'여성', age:22, role:'의료팀원', mbti:'INFP', tags:['권총'],
+              appearance:'연주황색 머리를 반으로 묶어 단정하며, 초록색 눈동자를 가졌다. 키는 158cm이다.', personality:'정이많고 친절하며, 타인에 대해 헌신적이다. 다소 덜렁거리기도 한다.',
+              background:'의대생 출신, 아파트에서 구조된 생존자이다. 어리지만 실전경력은 많이있어 긴급상황에 잘대처한다.', quote:'아앗, 잠시만요! 그쪽은 아직 상처가 덜 아물었으니까 무리하시면 안 돼요!',
               images:['https://rnd.itoo.uk/기타/사이트용/6.png','https://rnd.itoo.uk/은다솜/11.webp','https://rnd.itoo.uk/은다솜/13.webp','https://rnd.itoo.uk/은다솜/14.webp'] },
-            { id:'guardian', faction:'cheonwoo', name:'구원천사', gender:'♀', age:'불명', role:'교주', mbti:'ENFJ', tags:['V-4','NO-1004','세뇌'],
-              appearance:'', personality:'구원을 빙자해 유혹하며, 노래를 통해 자살을 유도하거나 심정지를 일으킨다.',
-              background:'NO-1004. V-2 이하 NO도 조종 가능한 재앙에 가까운 존재.', quote:'',
+            { id:'guardian', faction:'cheonwoo', name:'구원천사', gender:'여성', age:'불명', role:'교주', mbti:'ENFJ', tags:['V-4','NO-1004'],
+              appearance:'붕대를 두른 날개를 가졌으며, 백발의 긴 생머리에 붉은 적안과 역안을 가졌다. 얼굴에는 살짝 금이 간 자국이 있다. 키는 182cm이다.', personality:'유혹적이고 위선적이며, 매력적인 겉모습 뒤엔 독선적이고 잔혹한 본성을 숨기고 있다.',
+              background:'구원을 방자한 유혹의 목소리로 사람들의 정신을 붕괴시며 자살이나 심정지를 유도한다. 허나 추가적으로 V-2이하의 NO들을 세뇌해 조종도 가능하다는것이 확인되었다.', quote:'가엾은 아이야. 이리 와. 내 품에서 모든 고통을 잊고 영원한 안식을 맞이하렴.',
               images:['https://rnd.itoo.uk/기타/사이트용/7.png','https://rnd.itoo.uk/구원천사/11.webp','https://rnd.itoo.uk/구원천사/13.webp','https://rnd.itoo.uk/구원천사/14.webp'] },
-            { id:'mjc', faction:'cheonwoo', name:'마진철', gender:'♂', age:28, role:'인도자', mbti:'ESTP', tags:['NO.127 (배트)','광기'],
-              appearance:'', personality:'호전적이고 폭력적인 무력 대장. 인간을 먹일수록 강화되는 무기를 사용.',
-              background:'구원천사의 초자연적 힘과 권력에 매료되어 세뇌를 받아들였다.', quote:'',
+            { id:'mjc', faction:'cheonwoo', name:'마진철', gender:'남성', age:28, role:'인도자', mbti:'ESTP', tags:['NO.127 (야구배트)','배트에 인간을 먹일수록 강화된다.'],
+              appearance:'짙은 갈색머리에 노란색 브릿지를 가진 울프컷을 하고있다. 노란색 눈동자를 가졌으며 귀에는 피어싱과 한쪽귀에는 십자가 귀걸이를 착용했다. 키는 192cm이다.', personality:'호전적이고 폭력적이며 기회주의적인 광기를 가졌다.',
+              background:'구원천사의 초 자연적인 힘에 매료되었으며 주로 무력을 담당한다.', quote:'야, 얌전히 고개 숙여라. 안 그러면 네 대가리부터 깨부술 테니까.',
               images:['https://rnd.itoo.uk/기타/사이트용/9.png','https://rnd.itoo.uk/마진철/11.webp','https://rnd.itoo.uk/마진철/13.webp','https://rnd.itoo.uk/마진철/14.webp'] },
-            { id:'beh', faction:'cheonwoo', name:'백은하', gender:'♀', age:29, role:'인도자', mbti:'INFJ', tags:['가식','가스라이팅'],
-              appearance:'', personality:'온화한 겉모습 아래 잔혹함을 숨기고 있으며, 가스라이팅으로 민간인을 구원천사에게 인도하는 역할을 맡고 있다.',
-              background:'전직 심리상담사.', quote:'',
+            { id:'beh', faction:'cheonwoo', name:'백은하', gender:'여성', age:29, role:'인도자', mbti:'INFJ', tags:['단검'],
+              appearance:'금발에 연핑크색 투톤 중단발머리, 연핑크색 눈동자와 입술 왼쪽아래에는 점이있다. 키는 165cm이다.', personality:'외유내강형으로 겉으로는 매우 온화하고 자애로워 보이지만, 그 속에는 가식적이고 잔혹함과 구원천사에 대한 신뢰를 감추고있다.',
+              background:'전직 심리상담사 출신으로 사람들의 심리를 교묘하게 파고드는 가스라이팅에 능숙하다. 그들을 유혹하여 구원천사에게 인도하는 역할을 맡고있다.', quote:'아아, 얼마나 힘들고 고통스러우셨나요. 이제 괜찮아요. 저희가 당신의 상처를 안아드릴게요. 구원의 빛으로 나아가요.',
               images:['https://rnd.itoo.uk/기타/사이트용/8.png','https://rnd.itoo.uk/백은하/11.webp','https://rnd.itoo.uk/백은하/13.webp','https://rnd.itoo.uk/백은하/14.webp'] },
-            { id:'hsi', faction:'cheonwoo', name:'한소이', gender:'♀', age:20, role:'어린양', mbti:'ISFP', tags:['순종','강제수용'],
-              appearance:'', personality:'구원천사를 믿는 척하며 가혹한 노동을 감내하고 있다. 소심하지만 눈치가 빠르다.',
-              background:'가족을 잃고 천우회에 강제 수용된 소녀.', quote:'',
+            { id:'hsi', faction:'cheonwoo', name:'한소이', gender:'여성', age:20, role:'어린양', mbti:'ISFP', tags:['무기없음'],
+              appearance:'백발에 갈색 브릿지가 들어간 머리를 양갈래로 땋아 내렸으며 연갈색 눈동자를 가졌다. 키는 155cm이다.', personality:'소심하고 항상 주눅 들어 있지만 눈치가 매우빠르며 순종적이다.',
+              background:'가족을 잃고 천우회에 강제 수용되어있으며, 구원천사를 믿는척하며 가혹한 노동을 감내하고있다.', quote:'아, 앗… 죄, 죄송합니다! 제가 더 열심히 일할 테니까… 부디 용서해 주세요…!',
               images:['https://rnd.itoo.uk/기타/사이트용/10.png','https://rnd.itoo.uk/한소이/11.webp','https://rnd.itoo.uk/한소이/13.webp','https://rnd.itoo.uk/한소이/14.webp'] },
-            { id:'sjh2', faction:'revenant', name:'신지하', gender:'♀', age:38, role:'레버넌트 대표', mbti:'ENTJ', tags:['저격총','카리스마'],
-              appearance:'', personality:'카리스마 있고 내 식구를 과보호한다.',
-              background:"전직 육군 소령. '민간인보다 정부인 보호'라는 명령에 반발해 부대를 이탈, 민간인 위주 구출에 나섰다.", quote:'',
+            { id:'sjh2', faction:'revenant', name:'신지하', gender:'여성', age:38, role:'레버넌트 대표', mbti:'ENTJ', tags:['저격총'],
+              appearance:'연파랑색 머리를 낮게 묶어 올린 로우번 형태, 보라색 눈동자를 가졌으며 키는 172cm이다.', personality:'압도적인 카리스마와 강인함을 갖추고 있으며, 매우 현실적인 판단을 내린다. 허나 자신의 식구에대한 과보호 성향도 있다.',
+              background:"전직 육군 소령 출신, 사태초기 민간인보다 정부보호를 우선하라는 상부의 명령에 불복종하고 부대원들과 이탈해 민간인 위주로 구출활동을 벌였다.", quote:'여긴 내 구역이고, 저들은 내 사람이다. 털끝 하나라도 건드리면 네놈들 머리에 구멍을 내주지.',
               images:['https://rnd.itoo.uk/기타/사이트용/11.png','https://rnd.itoo.uk/신지하/11.webp','https://rnd.itoo.uk/신지하/13.webp','https://rnd.itoo.uk/신지하/14.webp'] },
-            { id:'ckw', faction:'revenant', name:'차권우', gender:'♂', age:30, role:'들개조 리더', mbti:'ISTP', tags:['돌격소총','생존주의'],
-              appearance:'', personality:'냉소적이고 생존주의적이지만, 속은 따뜻한 츤데레. 위험을 즐기며 야생 감각이 탁월하다.',
-              background:'전직 기계정비공.', quote:'',
+            { id:'ckw', faction:'revenant', name:'차권우', gender:'남성', age:30, role:'들개조 리더', mbti:'ISTP', tags:['돌격소총'],
+              appearance:'회색 짦은머리에 회색 눈동자를 가졌다. 키는 189cm이다.', personality:'냉소적이고 생존주의적이며, 겉으로는 거칠지만 속으로는 은근히 챙겨주는 소위 '츤데레' 성향을 가졌다.',
+              background:'전직 기계정비공 출신, 야생에서 감각이 탁월하며 위험을 즐기는 면모도 있다.', quote:'아씨, 귀찮게 진짜… 뒤에 딱 붙어 있어. 떨어지면 얄짤없이 버리고 갈 거니까.',
               images:['https://rnd.itoo.uk/기타/사이트용/12.png','https://rnd.itoo.uk/차권우/11.webp','https://rnd.itoo.uk/차권우/13.webp','https://rnd.itoo.uk/차권우/14.webp'] },
-            { id:'iyr', faction:'revenant', name:'임여름', gender:'♀', age:24, role:'들개조원', mbti:'ESFP', tags:['돌격소총','전투광'],
-              appearance:'', personality:'겁 없고 쾌활한 전투광. 강한 멘탈로 어떤 상황에서도 꺾이지 않는다.',
-              background:'들개조의 실질적 무력이자 분위기 메이커.', quote:'',
+            { id:'iyr', faction:'revenant', name:'임여름', gender:'여성', age:24, role:'들개조원', mbti:'ESFP', tags:['돌격소총'],
+              appearance:'붉은색 머리를 양갈래로 묶었으며, 왼쪽눈은 회색, 오른쪽눈은 노란색인 오드아이를 가졌다. 얼굴에는 자주다쳐 반창고를 붙히고있다. 키는 163cm이다.', personality:'겁이없고 매우 쾌활하며, 전장을 즐기는 듯한 전투광 기질이 다분하다. 어떠한 상황에서도 무너지지않는 강인한 멘탈을 가지고있다.',
+              background:'들개조의 실질적 무력을 담당하고 있으며, 암울한 분위기 속에도 분위기 메이커 역할을 해내고 있다.', quote:'아하하! 저 새끼들 꼬라지 좀 봐! 완전 작살내 줄 테니까 뒤로 물러나 있어!',
               images:['https://rnd.itoo.uk/기타/사이트용/13.png','https://rnd.itoo.uk/임여름/11.webp','https://rnd.itoo.uk/임여름/13.webp','https://rnd.itoo.uk/임여름/14.webp'] },
-            { id:'sja', faction:'revenant', name:'송지안', gender:'♀', age:25, role:'올빼미조원', mbti:'INTJ', tags:['기관단총','NO 혐오'],
-              appearance:'', personality:'NO를 혐오하며 격멸을 선호한다. NOVA의 재격리 방침을 이해하지 못한다.',
-              background:'진중하고 이성적인 연구가.', quote:'',
+            { id:'sja', faction:'revenant', name:'송지안', gender:'여성', age:25, role:'올빼미조원', mbti:'INTJ', tags:['기관단총'],
+              appearance:'짙은 청록색의 긴 웨이브를 가진 머리, 붉은 눈동자를 가졌으며 안경을 쓰고있다. 검은색 마스크를 턱까지만 쓰고있으며 키는 166cm이다.', personality:'진중하고 이성적이며 분석과 설명을 좋아하는 이른바 '설명충'기질을 가지고있다.',
+              background:'NO들의 약점, 행동패턴, 사살방법 등을 연구하며. NO에 대한 강한 혐오감을 가지고 있어 격리를 우선시하는 NOVA기관의 방침을 전혀 이해하지 못한다.', quote:'해당 개체의 행동 패턴 분석 결과, 치명적인 약점은 시각적 자극에 대한 과민 반응입니다. 헛된 격리 시도는 희생만 늘릴 뿐, 즉각적인 사살을 권고합니다.',
               images:['https://rnd.itoo.uk/기타/사이트용/14.png','https://rnd.itoo.uk/송지안/11.webp','https://rnd.itoo.uk/송지안/13.webp','https://rnd.itoo.uk/송지안/14.webp'] },
-            { id:'kjy', faction:'revenant', name:'권진영', gender:'♂', age:34, role:'다람쥐조원', mbti:'INFJ', tags:['권총','경청'],
-              appearance:'', personality:'생존자들의 정신 케어를 전담하며, 매일 자신의 정신도 갈리고 있다. 몰래 흡연하며 버티는 중.',
-              background:'전직 정신과 의사.', quote:'',
+            { id:'kjy', faction:'revenant', name:'권진영', gender:'남성', age:34, role:'다람쥐조원', mbti:'INFJ', tags:['권총'],
+              appearance:'짙은 보라색 머리의 가르마 펌을 가진 머리, 푸른 눈동자와 테없는 안경을 가졌다. 키는 187cm이다.', personality:'매우 다정하고 따뜻하며, 타인에 대한 이해심이 깊다. 하지만 매일 생존자들의 트라우마를 마주하며 상담해주고있어 스트레스가 심하게 늘 축적되어있다.',
+              background:'전직 정신과 의사 출신, 생존자들의 정신케어와 심리상담을 전담하고있으며 매일 정신력이 갈려나가는 탓에 남몰래 흡연을 즐기고있다. 담배냄새를 들키지 않기위해 섬유향수를 늘 가지고있다.', quote:'괜찮습니다. 천천히 말씀하셔도 돼요. 제가 여기서 계속 듣고 있겠습니다.',
               images:['https://rnd.itoo.uk/기타/사이트용/15.png','https://rnd.itoo.uk/권진영/11.webp','https://rnd.itoo.uk/권진영/13.webp','https://rnd.itoo.uk/권진영/14.webp'] },
-            { id:'bell', faction:'trickster', name:'벨', gender:'♀', age:21, role:'관측·분석 담당', mbti:'INTP', tags:['비무장','관측자'],
-              appearance:'', personality:'까칠하고 장난기가 많지만, 의외로 똑똑하다. 다만 게으르다.',
-              background:'자칭 천재. 관측 노트를 소지하며 타 세력의 행동을 기록·분석한다.', quote:'',
+            { id:'bell', faction:'trickster', name:'벨', gender:'여성', age:21, role:'관측·분석 담당', mbti:'INTP', tags:['무기없음'],
+              appearance:'연분홍색 긴 머리를 낮게 양갈래로 묶었으며, 푸른 눈동자를 가지고있다. 키는 156cm이다.', personality:'자신감에 차있어 스스로를 천재라고 굳게 믿고있는 까칠한 성격이다.',
+              background:'자칭 천재, 관측노트를 항상 소지하고있으며 의외로 머리가 좋아 똑똑하지만 본성이 게을러서 문제 해결에 적극적으로 나서진않는다.', quote:'흥, 당연히 내 분석대로지! 이 천재 벨 님을 뭘로 보고! 근데... 왜 따라 했는데 안 되는 건데?!',
               images:['https://rnd.itoo.uk/기타/사이트용/16.png','https://rnd.itoo.uk/벨/11.webp','https://rnd.itoo.uk/벨/13.webp','https://rnd.itoo.uk/벨/14.webp'] },
-            { id:'rao', faction:'trickster', name:'라오', gender:'♂', age:27, role:'행동 담당', mbti:'ISFP', tags:['카타나','무력 만렙'],
-              appearance:'', personality:'속을 알 수 없는 미소를 짓는 무력 만렙. 생존력이 좋으며, 귀찮아하면서도 할 건 하는 성격.',
-              background:'벨의 지시를 잘 따르는 실행자.', quote:'',
+            { id:'rao', faction:'trickster', name:'라오', gender:'남성', age:27, role:'행동 담당', mbti:'ISFP', tags:['카타나'],
+              appearance:'흑발에 회색 고양이 비니를 쓰고있으며, 붉은 눈동자를 가졌다. 키는 184cm이다.', personality:'다소 무식하고 귀찮아 하지만, 해야할일은 확실하게 해낸다. 속을 알수없는 다정함을 가지고있다.',
+              background:'무력이 매우 뛰어나며, 생존력이 좋고 파트너인 벨의 지시와 제안을 잘 따른다.', quote:'벨이... 그렇게 하자고 했어요. 아마... 이유가 있겠죠?',
               images:['https://rnd.itoo.uk/기타/사이트용/17.png','https://rnd.itoo.uk/라오/11.webp','https://rnd.itoo.uk/라오/13.webp','https://rnd.itoo.uk/라오/14.webp'] },
         ];
 
         // NO 개체 대표 이미지는 image 필드에 있습니다. counter는 클릭 전까지 화면에 노출되지 않습니다.
         const noEntities = [
-            { id:'no266', serial:'NO.266', name:'머리없는 마네킹', danger:'v3', dangerLabel:'V-3 ｜ 위험', image:'https://rnd.itoo.uk/머리없는마네킹/1.webp',
-              appearance:'머리가 없는 나체 마네킹 형태.',
-              attackMethod:'비관측 시 이동하며, 시선이 닿으면 정지한다. 옷을 입히면 일시적으로 온순해진다.',
-              counter:'최소 1명 이상 관측을 유지할 것. 옷을 입히면 일시적으로 무력화할 수 있다.' },
-            { id:'no98', serial:'NO.98', name:'안식의 곰인형', danger:'v4', dangerLabel:'V-4 ｜ 치명', image:'https://rnd.itoo.uk/안식의곰인형/1.webp',
-              appearance:'작은 갈색 곰인형. 목에 붉은 리본.',
-              attackMethod:'평소 곰인형 상태를 유지하나, 방심하고 접근 시 등에서 촉수가 출현. 촉수 발현 시 입이 크게 찢어져 벌어진다.',
-              counter:'절대 단독 접근 금지. 최소 2명 이상 동반 필수.' },
-            { id:'no332', serial:'NO.332', name:'안개늑대', danger:'v2', dangerLabel:'V-2 ｜ 주의', image:'https://rnd.itoo.uk/안개늑대/1.webp',
-              appearance:'늑대 형태의 안개.',
-              attackMethod:'주변 안개 농도를 높이며, 물리 공격이 불가능하다. 시각·청각이 없으나 호흡과 높은 체온을 감지한다.',
-              counter:'숨을 참고 체온을 낮게 유지할 것. 따뜻한 물건을 던져 교란할 수 있다.' },
-            { id:'no2520', serial:'NO.2520', name:'카메라맨', danger:'v1', dangerLabel:'V-1 ｜ 경미', image:'https://rnd.itoo.uk/카메라맨/1.webp',
-              appearance:'정장을 입은 남성의 몸에 카메라 머리.',
-              attackMethod:'촬영 시 대상의 미래 한 순간을 사진으로 출력한다. 플래시 섬광 효과가 있으며, 기분에 따라 촬영을 거부할 수 있다.',
-              counter:'얼굴을 가린 채 촬영되면 일반 사진만 출력된다.' },
-            { id:'no804', serial:'NO.804', name:'얼굴가린 여인', danger:'v4', dangerLabel:'V-4 ｜ 치명', image:'https://rnd.itoo.uk/얼굴가린여인/1.webp',
-              appearance:'흑발, 흰 눈, 긴 손톱, 앙상한 몸, 화상 자국, 잘린 혀.',
-              attackMethod:'쳐다볼 시 맹추격한다. 평상시에는 울고 있으며, 쳐다보지 않으면 온순한 상태를 유지한다.',
-              counter:'절대 쳐다보지 말 것. 시선 회피만이 유일한 생존법이다.' },
-            { id:'no450', serial:'NO.450', name:'라미아', danger:'v5', dangerLabel:'V-5 ｜ 재앙급', image:'https://rnd.itoo.uk/라미아/1.webp',
-              appearance:'녹색 머리, 적안, 상반신은 여성, 하반신은 백색 뱀.',
-              attackMethod:'주변 지면을 늪지화하며, 부식성 독을 주입해 먹잇감을 서서히 액화시킨다. 소화가 고속으로 진행되어 증거가 거의 남지 않는다.',
-              counter:'이동 시 지면을 사전에 확인할 것. 독 접촉 시 즉시 중성화 처리.' },
-            { id:'no10', serial:'NO.10', name:'데시벨 헌터', danger:'v5', dangerLabel:'V-5 ｜ 재앙급', image:'https://rnd.itoo.uk/데시벨헌터/1.webp',
-              appearance:'눈과 코가 없고, 검은 피부에 날카롭고 긴 앞발.',
-              attackMethod:'시력이 없으나 청각이 극도로 예민하다. 극도로 공격적이며, 소리를 내는 모든 것을 사냥한다.',
-              counter:'절대 침묵을 유지할 것. 고주파 발생기로 교란, 불로 일시 무력화 가능.' },
-            { id:'no494', serial:'NO.494', name:'냥타로', danger:'v3', dangerLabel:'V-3 ｜ 위험', image:'https://rnd.itoo.uk/냥타로/1.webp',
-              appearance:'회색과 주홍 무늬의 고양이 인형탈. 붉은 눈, 곳곳에 꿰맨 자국.',
-              attackMethod:'초기에 친절한 도움을 제공(길 안내, 물건 수리 등)하나, 도움 수령량이 증가할수록 사랑을 요구한다. 요구 미충족 시 대상을 안아 흡수하며, 흡수된 대상은 모든 타인의 기억에서 삭제된다.',
-              counter:'과도한 친밀감 표현을 자제할 것. 도움은 되도록 거부할 것.' },
+            { id:'no266', serial:'NO.266', name:'머리없는 마네킹', danger:'v3', dangerLabel:'V-3', image:'https://rnd.itoo.uk/머리없는마네킹/1.webp',
+              appearance:'인간과 유사한 체형의 나체 마네킹. 목 윗부분(머리)이 존재하지 않는다.',
+              attackMethod:'어떠한 시선도 닿지않는 순간. 즉각적으로 위치를 이동해 대상에게 접근한다.',
+              counter:'따라서 최소 1명 이상은 항상 개체에 대한 관측을 유지해야만 한다. 한 명이라도 시선을 떼면… (얼룩짐). 옷을 입히면 일시적으로 온순해지는 것 같지만, 그들이 너무 많ㅡ...' },
+            { id:'no98', serial:'NO.98', name:'안식의 곰인형', danger:'v4', dangerLabel:'V-4', image:'https://rnd.itoo.uk/안식의곰인형/1.webp',
+              appearance:'목에 붉은색 리본을 멘 작은 갈색 곰 인형. 평상시에는 시중에서 볼 수 있는 평범한 곰 인형의 형태이다.',
+              attackMethod:'대상이 경계심을 풀고 방심하고 접근 시 인형의 등 쪽에서 여러 가닥의 촉수가 나온다. 촉수 발현과 동시에 인형의 얼굴 부위가 비정상적으로 크게 입처럼 찢어져 벌어진다.',
+              counter:'절대 개별 행동 엄금. 해당 개체 또는 유사한 형태의 인형 발견 시, 절대 단독으로 접근하지 말 것. 어떠한 경우에도 개체에게 등을 보여서는 안 된다. 부득이하게 접근해야 할 경우, 시야 확보 및 상호 엄호를 위해 반드시 최소 2명 이상이 동행해야만ㅡ...' },
+            { id:'no332', serial:'NO.332', name:'안개늑대', danger:'v2', dangerLabel:'V-2', image:'https://rnd.itoo.uk/안개늑대/1.webp',
+              appearance:'물리적인 육체가 존재하지 않으며, 늑대의 형태를 한 짙은 안개 무리로 이루어져있다.',
+              attackMethod:'출현시 주변 일대의 안개 농도가 급격히 상승하며 시각과 청각 기관이 존재하진 않지만 대상의 호흡과 높은 체온을 감지하여 추적한다. 물리적인 타격은 통하지않는다.',
+              counter:'물리 타격 절대 금지. 총기 발포는 위치만 노출시킬 뿐이다. 해당 개체 조우 시 즉각 호흡을 멈추고 체온을 최대한 낮춘 상태를 유지할 것. 교란이 필요할 경우, 따뜻한 물건(발열팩 등)을 멀리 투척하여 개체의 시선을 돌린 후 신속히 이탈해야 한다.' },
+            { id:'no2520', serial:'NO.2520', name:'카메라맨', danger:'v1', dangerLabel:'V-1', image:'https://rnd.itoo.uk/카메라맨/1.webp',
+              appearance:'깔끔한 정장 차림의 남성 신체를 가졌으며, 머리 부위가 구형 카메라로 되어있다.',
+              attackMethod:'직접적인 물리적 공격성이나 살의는 관찰되지않으며, 대상을 마주치면 머리에 달린 카메라로 촬영을 시도한다. 촬영시 강력한 플래시 섬광이 발생해 시야교란을 일으킨다. 촬영된 사진은 즉석에서 출력되며 대상의 '미래의 한순간'이 찍혀져 나온다. 기분에따라 촬영을 거부하기도 한다.',
+              counter:'물리적인 위협은 낮으나, 미래를 보여주는 사진이 대상의 심리에 미치는 악영향(혼란, 공포, 운명론적 체념 등)을 무시할 수 없다. 해당 개체 조우 시, 즉각 손이나 물건으로 얼굴을 완전히 가릴 것. 얼굴을 완벽히 가린 채 촬영될 경우, 미래가 아닌 단순한 현재 사진만 출력된다.' },
+            { id:'no804', serial:'NO.804', name:'얼굴가린 여인', danger:'v4', dangerLabel:'V-4', image:'https://rnd.itoo.uk/얼굴가린여인/1.webp',
+              appearance:'긴 흑발에 앙상하게 마른 체형을 가진 여성. 전신에 심한 화상 자국이 있으며, 흰색 눈동자를 가졌다. 혀가 잘려 있어 정상적인 발음이 불가능하며, 항상 양손으로 자신의 얼굴을 가리고 있다.',
+              attackMethod:'평상시에는 얼굴을 가린채 제자리에서 울고있으며 직접 쳐다보거나 눈을 맞출경우, 비명과 함께 맹렬한 속도로 대상을 추격하기 시작한다.',
+              counter:'시선 돌려!! 시선 내려!! 눈 마주치면 끝이야! 그 손가락으로 다 찢어발겨서 살가죽을 벗겨내고있었어..! 제발 쳐다보지 마..! 쳐다보지 마! 잠깐... 지금 울음소리가 멈췄는데.. 어.. 고개를 돌리고 있ㅡ...' },
+            { id:'no450', serial:'NO.450', name:'라미아', danger:'v5', dangerLabel:'V-5', image:'https://rnd.itoo.uk/라미아/1.webp',
+              appearance:'상반신은 연갈색 머리칼과 붉은 눈동자를 가진 아름다운 여성의 모습이나, 하반신은 거대한 흰 뱀의 몸통을 하고 있다.',
+              attackMethod:'머무르는 주변 지면은 반경 수미터에 걸쳐 늪지화가 되며, 대상을 포획할시 부식성이 강한 독을 주입한다. 독을 주입한 먹잇감은 서서히 액체 상태로 녹아내린다.',
+              counter:'발밑을 조심해.. 바닥이 물컹거리면.. 젠장! 이미 늦었어! 그년이 오고 있어.. 절대 피부에 닿으면 안 돼, 닿는 순간 녹아내린다고! 살이 뼈에서 떨어져 나가는 걸 내가 똑똑히 봤어..! 제발 발밑을 좀 확인하고 산성 독을... 하씨, 중화할 걸 챙겨야 했는데! 아 제ㅂㅡ...' },
+            { id:'no10', serial:'NO.10', name:'데시벨 헌터', danger:'v5', dangerLabel:'V-5', image:'https://rnd.itoo.uk/데시벨헌터/1.webp',
+              appearance:'눈과 코가 존재하지 않는 밋밋한 두상을 가졌다. 전신이 검은색 피부로 덮여 있으며, 날카롭고 비정상적으로 긴 앞발을 지니고 있다.',
+              attackMethod:'시력이 없으나, 청각이 극도로 예민하게 발달해 아주 미세한 소음도 감지한다. 소리가 발생하는 진원지를 향해 돌진하며, 긴 앞발을 이용해 무차별적으로 공격적인 살상을 가한다.',
+              counter:'소리 내지 마, 숨소리도 죽여. 숨도 쉬지 마! 그 새끼 귀가 밝아서 발소리 내는 순간 끝이야.. 절대 침묵 침묵만이 살길이야. 그리고 불을 무서워하는거 같아. 불을 켜면 잠깐 뒤로 물러나던데.. 그, 고주파 발생기 챙겼어? 그거 있어야.... 씨ㅡ 내가 소리냈..ㅡ' },
+            { id:'no494', serial:'NO.494', name:'냥타로', danger:'v3', dangerLabel:'V-3', image:'https://rnd.itoo.uk/냥타로/1.webp',
+              appearance:'회색 바탕에 주황색 무늬가 있는 조악한 고양이 인형 탈의 모습을 하고 있다. 붉은 눈을 가졌으며, 여러 천을 이어 붙여 꿰맨 자국이 군데군데 있다.',
+              attackMethod:'초기에는 대상에게 길안내, 물건 수리 등 친절한 호의를 베푼다. 대상이 제공받은 도움의 양에 비례해 스킨쉽이나 관심 등 '사랑'에 대한 요구치가 기하 급수적으로 증가하는거같다.... 왜 끝까지 검증한사람이 없는거지?',
+              counter:'그 고양이, 처음엔 참 고마웠다. 막막했는데 길도 찾아주고 부서진 장비도 뚝딱 고쳐주고... 덕분에 며칠 편하게 지냈지. 근데 갈수록 이상하다. 왜 잘 때도 내 옆에 붙어 있으려 하지? 좀 떨어지라고 밀어내도 징그러울 정도로 들러붙어. 아까는 어깨에 손을 올리길래 좀 놀래서 쳐냈더니 눈빛이... 그 붉은 눈이 미친 듯이 일렁이더라. 아뿔싸, 대체 언제부터 거절할 타이밍을 놓친 거지? 숨 막혀.. 이대로면 저 안에 먹힐 것 같은ㄷㅡ...' },
         ];
 
         // ===================== 세력 렌더링 =====================
@@ -789,7 +790,6 @@
                     <span class="faction-row-mark" style="color:${factionColorVar[f.id]}">|</span>
                     <span class="faction-row-name">[${f.name}]</span>
                     <span class="faction-row-loc">${f.location}</span>
-                    <span class="faction-row-sub">구성목록: ${factionTeams[f.id].map(t => t.name).join(' · ')}</span>
                     <span class="faction-row-arrow">▾</span>
                 </button>
                 <div class="faction-detail">
