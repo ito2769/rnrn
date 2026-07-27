@@ -146,7 +146,7 @@
         .hero-side-fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to right, var(--bg-primary) 0%, transparent 22%, transparent 78%, var(--bg-primary) 100%); }
         .hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 46%; background: linear-gradient(transparent, var(--bg-primary)); z-index: 1; }
         @keyframes float { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(3%,-4%) scale(1.08); } }
-        .hero-grid { position: absolute; inset: 0; z-index: 1; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 40%, transparent 90%); }
+        .hero-grid { position: absolute; inset: 0; z-index: 1; background-image: linear-gradient(rgba(255,255,255,0.008) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 40%, transparent 90%); }
         .hero-scanline { position: absolute; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,32,32,0.35), transparent); z-index: 1; animation: scan 6s linear infinite; }
         @keyframes scan { 0% { top: -5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 105%; opacity: 0; } }
         .hero-content { position: relative; z-index: 2; text-align: center; animation: fadeInUp 1.5s ease; padding: 0 20px; }
