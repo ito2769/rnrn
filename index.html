@@ -101,6 +101,16 @@
         /* 커스텀 마우스 포인터 */
         .intro-ptr { position: fixed; left: 0; top: 0; width: 20px; height: 28px; z-index: 40; pointer-events: none; transform: translate(-50%,-50%); transition: transform 0.08s ease; }
 
+        /* 인트로 스킵 버튼 */
+        .intro-skip-btn {
+            position: absolute; right: 22px; bottom: 22px; z-index: 45;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 2px; color: var(--text-secondary);
+            background: rgba(20,20,20,0.65); border: 1px solid rgba(255,255,255,0.18); padding: 9px 18px; border-radius: 20px;
+            cursor: pointer; transition: all 0.2s; opacity: 0.85; backdrop-filter: blur(4px);
+        }
+        .intro-skip-btn:hover { border-color: var(--label-red); color: var(--label-red); opacity: 1; box-shadow: 0 0 14px rgba(255,32,32,0.25); }
+        @media (max-width: 768px) { .intro-skip-btn { right: 14px; bottom: 14px; font-size: 0.66rem; padding: 8px 14px; } }
+
         /* 권한 확인 팝업 */
         .perm-popup { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.25s ease; }
         .perm-popup.hidden { display: none; }
@@ -452,6 +462,9 @@
                 <path fill="#f0f0f0" stroke="#000" stroke-width="1" d="M2 2L2 24L6.5 19L9 26L12.5 24.5L10 18L17 18Z"/>
             </svg>
         </div>
+
+        <!-- 인트로 스킵 버튼 -->
+        <button class="intro-skip-btn" id="introSkipBtn">SKIP ▸</button>
     </div>
 
     <!-- NAVIGATION -->
@@ -1037,8 +1050,11 @@
             const permLine3 = document.getElementById('permLine3');
             const permDots = document.getElementById('permDots');
             const permBtn = document.getElementById('permBtn');
+            const introSkipBtn = document.getElementById('introSkipBtn');
             const bootLines = [document.getElementById('bootLine1'), document.getElementById('bootLine2'), document.getElementById('bootLine3'), document.getElementById('bootLine4')];
             const bootTexts = ['INITIALIZING...', 'CONNECTING TO ARCHIVE...', 'VERIFYING DATABASE...', 'ACCESS GRANTED'];
+
+            let introSkipped = false; // 스킵 버튼이 눌렸는지 여부 (인트로 시퀀스 각 단계에서 확인)
 
             const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -1074,6 +1090,7 @@
                     const startY = parseFloat(introPtr.dataset.y || window.innerHeight * 0.88);
                     const start = performance.now();
                     function frame(t) {
+                        if (introSkipped) { resolve(); return; }
                         let p = (t - start) / duration; if (p > 1) p = 1;
                         const ease = 1 - Math.pow(1 - p, 3);
                         const curve = Math.sin(p * Math.PI) * 16;
@@ -1107,15 +1124,26 @@
                 introFlash.style.transition = 'opacity 0.35s ease'; introFlash.style.opacity = '0';
             }
 
+            // 인트로를 즉시 종료하고 사이트로 진입 (권한확인 팝업의 '열람' 버튼과 동일한 동작)
+            function enterSiteNow() {
+                playMusic();
+                introOverlay.classList.add('closing');
+                document.body.classList.remove('intro-active');
+                setTimeout(() => { introOverlay.style.display = 'none'; }, 750);
+            }
+
             async function runIntro() {
                 // 1) 부팅
                 introPtr.style.opacity = '0';
                 for (let i = 0; i < bootTexts.length; i++) {
+                    if (introSkipped) return;
                     await typeLine(bootLines[i], bootTexts[i]);
                     await sleep(300);
                 }
+                if (introSkipped) return;
                 await sleep(600);
                 await flashScreen();
+                if (introSkipped) return;
                 bootScreen.classList.add('hidden');
                 desktopScreen.classList.remove('hidden');
                 requestAnimationFrame(() => desktopScreen.classList.add('visible'));
@@ -1127,12 +1155,16 @@
 
                 // 2) 바탕화면에서 구출일지 폴더로 이동 후 더블클릭
                 await sleep(700);
+                if (introSkipped) return;
                 const targetFolder = desktopIconsEl.querySelector('[data-name="구출일지"]');
                 await movePtr(targetFolder, 1300);
+                if (introSkipped) return;
                 await sleep(300);
                 await ptrDoubleClick(targetFolder);
+                if (introSkipped) return;
                 glitchBurst();
                 await sleep(220);
+                if (introSkipped) return;
 
                 // 3) 폴더 내부로 전환
                 desktopScreen.classList.remove('visible');
@@ -1140,27 +1172,34 @@
                 folderScreen.classList.remove('hidden');
                 requestAnimationFrame(() => folderScreen.classList.add('visible'));
                 await sleep(500);
+                if (introSkipped) return;
 
                 // 4) 파일로 이동 후 더블클릭
                 const targetFile = fileIconsEl.querySelector('[data-name="01_현장기록.log"]');
                 await movePtr(targetFile, 1000);
+                if (introSkipped) return;
                 await sleep(250);
                 await ptrDoubleClick(targetFile);
+                if (introSkipped) return;
                 glitchBurst();
                 await sleep(200);
+                if (introSkipped) return;
 
                 // 5) 권한 확인 팝업
                 permPopup.classList.remove('hidden');
                 requestAnimationFrame(() => permPopup.classList.add('show'));
                 permLine1.classList.remove('hidden');
                 await sleep(750);
+                if (introSkipped) return;
                 permLine2.classList.remove('hidden');
                 let dotCount = 0;
                 const dotTimer = setInterval(() => { dotCount = (dotCount + 1) % 5; permDots.textContent = ' ' + '. '.repeat(dotCount); }, 260);
                 await sleep(1700);
                 clearInterval(dotTimer);
+                if (introSkipped) return;
                 permDots.textContent = ' . . . .';
                 await sleep(300);
+                if (introSkipped) return;
                 permLine3.classList.remove('hidden');
                 permBtn.classList.remove('hidden');
                 requestAnimationFrame(() => permBtn.classList.add('show'));
@@ -1172,10 +1211,16 @@
             }
 
             document.getElementById('permBtn').addEventListener('click', () => {
-                playMusic();
-                introOverlay.classList.add('closing');
-                document.body.classList.remove('intro-active');
-                setTimeout(() => { introOverlay.style.display = 'none'; }, 750);
+                enterSiteNow();
+            });
+
+            // 스킵 버튼 : 인트로 애니메이션 전체를 건너뛰고, 열람 버튼을 눌렀을 때와 동일하게
+            // 배경음악 재생과 함께 바로 사이트로 입장한다.
+            introSkipBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (introSkipped) return;
+                introSkipped = true;
+                enterSiteNow();
             });
 
             runIntro();
